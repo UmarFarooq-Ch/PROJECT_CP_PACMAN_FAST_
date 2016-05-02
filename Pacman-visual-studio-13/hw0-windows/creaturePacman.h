@@ -8,6 +8,7 @@ private:
 	//static int score;
 	bool  m_n_move;	//member_numeric
 	float m_n_radians;	//member_numeric
+	short check;
 public:
 
 	/*nextAllowed*/
