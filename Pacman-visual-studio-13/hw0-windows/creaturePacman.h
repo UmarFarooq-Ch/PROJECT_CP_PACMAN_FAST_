@@ -8,7 +8,7 @@ private:
 	//static int score;
 	bool  m_n_move;	//member_numeric
 	float m_n_radians;	//member_numeric
-	short check;
+	short check;	//this data member is used to stop thokaren of Pacman with walls
 public:
 
 	/*nextAllowed*/
