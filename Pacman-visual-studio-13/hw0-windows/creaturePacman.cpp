@@ -16,10 +16,10 @@ void creaturePacman::nextMove(void)
 	int tempY = this->m_n_yVertex / 20;	//it gives -1 y block from uper side
 	int currentXVertex = (tempX ) * 20 + 10;
 	int currentYVertex = (tempY ) * 20 + 10;
-	cout << "tempX: " << tempX << endl;
+	/*cout << "tempX: " << tempX << endl;
 	cout << "tempY: " << tempY << endl;
 	cout << "x: " << m_n_xVertex << endl;
-	cout << "y: " << m_n_yVertex << endl;
+	cout << "y: " << m_n_yVertex << endl;*/
 	//now first i will check where is the direction of mouth of pacman
 	if (m_n_eyesDirection == LEFT_)
 	{
@@ -27,7 +27,7 @@ void creaturePacman::nextMove(void)
 		//int sameMidValueOftempY = (tempY) * 20 + 10; cout << "Next Mid Value of Y: " << sameMidValueOftempY << endl;
 		//now check which board part lies in tempX and tempY+1 /*yani same Y block*/
 		int nextPart = Board::getBoardPart(tempX - 1, 35 - tempY);
-		cout << "Left Board Part: " << nextPart << endl;
+		//cout << "Left Board Part: " << nextPart << endl;
 		if (nextPart == 16 || nextPart == 17 || nextPart == 18)	//if there is eatable or empty space then move the pacman
 		{
 			m_n_xVertex -= 5;
@@ -47,7 +47,7 @@ void creaturePacman::nextMove(void)
 	else if (m_n_eyesDirection == RIGHT_)
 	{
 		int nextPart = Board::getBoardPart(tempX + 1, 35 - tempY);
-		cout << "Right Board Part: " << nextPart << endl;
+		//cout << "Right Board Part: " << nextPart << endl;
 		if (nextPart == 16 || nextPart == 17 || nextPart == 18)	//if there is eatable or empty space then move the pacman
 		{
 			m_n_xVertex += 5;
@@ -66,7 +66,7 @@ void creaturePacman::nextMove(void)
 	else if (m_n_eyesDirection == UP_)
 	{
 		int nextPart = Board::getBoardPart(tempX, 35 - tempY - 1);
-		cout << "UP Board Part: " << nextPart << endl;
+		//cout << "UP Board Part: " << nextPart << endl;
 		if (nextPart == 16 || nextPart == 17 || nextPart == 18)	//if there is eatable or empty space then move the pacman
 		{
 			m_n_yVertex += 5;
@@ -85,7 +85,7 @@ void creaturePacman::nextMove(void)
 	else if (m_n_eyesDirection == DOWN_)
 	{
 		int nextPart = Board::getBoardPart(tempX, 35 - tempY + 1);
-		cout << "Down Board Part: " << nextPart << endl;
+		//cout << "Down Board Part: " << nextPart << endl;
 		if (nextPart == 16 || nextPart == 17 || nextPart == 18)	//if there is eatable or empty space then move the pacman
 		{
 			m_n_yVertex -= 5;
@@ -101,5 +101,5 @@ void creaturePacman::nextMove(void)
 		}
 		Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
 	}
-	cout << "\n........\n";
+	//cout << "\n........\n";
 }

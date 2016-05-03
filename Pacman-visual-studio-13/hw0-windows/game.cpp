@@ -96,7 +96,6 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 	case 3:	//When pacman is looking left
 	case 4:	//when pacman is looking upward
 		DrawCircle(b[1]->getX() - radius + radius / 2, b[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
-		//cout << "radius :" << radius << "   in line 98 gampe.cpp\n\n";
 		break;
 	case 1:	//when pacman is looking right
 		DrawCircle(b[1]->getX() + (radius - radius / 2), b[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
@@ -139,6 +138,9 @@ void Display()/**/ {
 	glutSwapBuffers(); // do not modify this line..
 	if (b[1]->getMove())
 	{
+		int local_variable = b[1]->getPendingDirection();
+		if (local_variable != 0)
+			b[1]->setEyesDirection(local_variable);
 		b[1]->nextMove();
 		glutPostRedisplay();
 	}
@@ -157,56 +159,37 @@ void Display()/**/ {
 void NonPrintableKeys(int key, int x, int y) {
 	if (key == GLUT_KEY_LEFT /*GLUT_KEY_LEFT is constant and contains ASCII for left arrow key*/) {
 		// what to do when left key is pressed...
-		int currentDirection = b[1]->getEyesDirection();
-		if (currentDirection != 3)
-		{
 
-		}
-		int x, y;
-		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0)//||(b[1]->getStartOfGame()))
-		{
 			b[1]->setEyesDirection(3);
-			b[1]->setMove(true);
-			b[1]->setRadian(6.0);
-			glutPostRedisplay();
-		}
+			//b[1]->setMove(true);
+			//b[1]->setRadian(6.0);
+			//glutPostRedisplay();
+
 	}
 	else if (key == GLUT_KEY_RIGHT /*GLUT_KEY_RIGHT is constant and contains ASCII for right arrow key*/) {
-		int x, y;
-		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0) //|| (b[1]->getStartOfGame()))
-		{
+
 			b[1]->setEyesDirection(1);
-			b[1]->setMove(true);
-			b[1]->setRadian(-1.2);
-			glutPostRedisplay();
-		}
+			//b[1]->setMove(true);
+			//b[1]->setRadian(-1.2);
+			//glutPostRedisplay();
 	}
 	else if (key == GLUT_KEY_UP/*GLUT_KEY_UP is constant and contains ASCII for up arrow key*/) {
-		int x, y;
-		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0)
-		{
+
 			b[1]->setEyesDirection(4);
-			b[1]->setRadian(-3.0);
-			b[1]->setMove(true);
-			glutPostRedisplay();
-		}
+			//b[1]->setRadian(-3.0);
+			//b[1]->setMove(true);
+			//glutPostRedisplay();
+
 	}
 
 	else if (key == GLUT_KEY_DOWN/*GLUT_KEY_DOWN is constant and contains ASCII for down arrow key*/) {
 
-		int x, y;
-		b[1]->getPosition(x, y);
-		if (x % 10 == 0 &&  y % 10 == 0 && x % 20 != 0 && y % 20 != 0)
-		{
 			b[1]->setEyesDirection(2);
-			b[1]->setRadian(1.5);
-			b[1]->setMove(true);
-			glutPostRedisplay();
+			//b[1]->setRadian(1.5);
+			//b[1]->setMove(true);
+			//glutPostRedisplay();
 			//system("pause");
-		}
+
 	}
 
 	/* This function calls the Display function to redo the drawing. Whenever you need to redraw just call

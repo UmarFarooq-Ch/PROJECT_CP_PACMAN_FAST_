@@ -10,6 +10,7 @@ protected:
 	string m_s_nameofCreature;	//member_string
 	ColorNames m_e_c_color;	//member_enum_composition
 	bool m_b_alive;	//member_bool
+	int m_n_directionPending;
 	enum eyesDirection
 	{
 		NILL_,	//Creature is looking to user
@@ -30,32 +31,7 @@ public:
 	inline void setX(const int & pX) { this->m_n_xVertex = pX;return; }
 	inline void setY(const int & pY) { this->m_n_yVertex = pY;return; }
 	inline int getEyesDirection(void)const { return this->m_n_eyesDirection; }
-	inline void setEyesDirection(const int & pEyesDirection)
-	{ 
-		int tempX = this->m_n_xVertex / 20;
-		int tempY = this->m_n_yVertex / 20;
-		switch (pEyesDirection)
-		{
-		case 4:
-			tempX = this->m_n_xVertex / 20;
-			tempY = (this->m_n_yVertex) / 20 + 2;
-			cout << this->m_n_yVertex / 20 << endl << endl << tempY << endl;
-			if (Board::getBoardPart(tempX,36- tempY) == 16 || Board::getBoardPart(tempX,36- tempY) == 17)
-			{
-				Board::setBoardPart(tempX, tempY, 17);
-				this->m_n_eyesDirection = pEyesDirection;
-				cout << "b:" << Board::getBoardPart(tempX, tempY) << endl;
-			}
-			break;
-		case 1:
-		case 2:
-		case 3:
-			m_n_eyesDirection = pEyesDirection;
-		}
-
-		
-		return; 
-	}
-
+	void setEyesDirection(const int & pEyesDirection);	
+	inline int getPendingDirection(void) const { return this->m_n_directionPending; }
 };
 
