@@ -136,7 +136,6 @@ void Display()/**/ {
 	x = (*b)->GetMidX();
 	DrawString(x - 60, 680, "Score = 000", colors[5]);
 	//	glPopMatrix();
-	cout << "x,y" << b[1]->getX()/20 << ',' << b[1]->getY()/20 << endl;
 	glutSwapBuffers(); // do not modify this line..
 	if (b[1]->getMove())
 	{
@@ -158,25 +157,51 @@ void Display()/**/ {
 void NonPrintableKeys(int key, int x, int y) {
 	if (key == GLUT_KEY_LEFT /*GLUT_KEY_LEFT is constant and contains ASCII for left arrow key*/) {
 		// what to do when left key is pressed...
-		b[1]->setEyesDirection(3);
-		b[1]->setMove(true);
-		b[1]->setRadian(6.0);
-		glutPostRedisplay();
+		int x, y;
+		b[1]->getPosition(x, y);
+		if (x % 10 == 0 && y % 10 == 0)//||(b[1]->getStartOfGame()))
+		{
+			b[1]->setEyesDirection(3);
+			b[1]->setMove(true);
+			b[1]->setRadian(6.0);
+			glutPostRedisplay();
+		}
 	}
 	else if (key == GLUT_KEY_RIGHT /*GLUT_KEY_RIGHT is constant and contains ASCII for right arrow key*/) {
-		b[1]->setEyesDirection(1);
-		b[1]->setMove(true);
-		b[1]->setRadian(-1.2);
-		glutPostRedisplay();
+		int x, y;
+		b[1]->getPosition(x, y);
+		if (x % 10 == 0 && y % 10 == 0) //|| (b[1]->getStartOfGame()))
+		{
+			b[1]->setEyesDirection(1);
+			b[1]->setMove(true);
+			b[1]->setRadian(-1.2);
+			glutPostRedisplay();
+		}
 	}
 	else if (key == GLUT_KEY_UP/*GLUT_KEY_UP is constant and contains ASCII for up arrow key*/) {
-		b[1]->setEyesDirection(4);
+		int x, y;
+		b[1]->getPosition(x, y);
+		if (x % 10 == 0 && y % 10 == 0)
+		{
+			b[1]->setEyesDirection(4);
+			b[1]->setRadian(-3.0);
+			b[1]->setMove(true);
+			glutPostRedisplay();
+		}
 	}
 
 	else if (key == GLUT_KEY_DOWN/*GLUT_KEY_DOWN is constant and contains ASCII for down arrow key*/) {
-		//glutPostRedisplay();
-		b[1]->setRadian(1.5);
-		system("pause");
+
+		int x, y;
+		b[1]->getPosition(x, y);
+		if (x % 10 == 0 &&  y % 10 == 0)
+		{
+			b[1]->setEyesDirection(2);
+			b[1]->setRadian(1.5);
+			b[1]->setMove(true);
+			glutPostRedisplay();
+			//system("pause");
+		}
 	}
 
 	/* This function calls the Display function to redo the drawing. Whenever you need to redraw just call

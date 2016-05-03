@@ -9,6 +9,7 @@ private:
 	bool  m_n_move;	//member_numeric
 	float m_n_radians;	//member_numeric
 	short check;	//this data member is used to stop thokaren of Pacman with walls
+	//bool startOfGame;
 public:
 
 	/*nextAllowed*/
@@ -19,6 +20,6 @@ public:
 	inline bool getMove(void) const { return this->m_n_move; }
 	inline float getRadian(void) const { return this->m_n_radians; }
 	inline void setRadian(const float & pValueRadian) { this->m_n_radians = pValueRadian; }
-	
+	//inline bool getStartOfGame(void) const { return this->startOfGame; }
 };
 

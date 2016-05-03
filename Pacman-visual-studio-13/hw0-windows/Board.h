@@ -73,6 +73,7 @@ public:
 	virtual inline void getPosition(int & pX, int & pY) const {}
 	virtual inline float getRadian(void) const { return 0; }
 	virtual inline void setRadian(const float & pValueRadian) {}
+	//virtual inline bool getStartOfGame(void) const { return false; }
 
 }
 ;
