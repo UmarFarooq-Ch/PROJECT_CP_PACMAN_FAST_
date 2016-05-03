@@ -157,9 +157,14 @@ void Display()/**/ {
 void NonPrintableKeys(int key, int x, int y) {
 	if (key == GLUT_KEY_LEFT /*GLUT_KEY_LEFT is constant and contains ASCII for left arrow key*/) {
 		// what to do when left key is pressed...
+		int currentDirection = b[1]->getEyesDirection();
+		if (currentDirection != 3)
+		{
+
+		}
 		int x, y;
 		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0)//||(b[1]->getStartOfGame()))
+		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0)//||(b[1]->getStartOfGame()))
 		{
 			b[1]->setEyesDirection(3);
 			b[1]->setMove(true);
@@ -170,7 +175,7 @@ void NonPrintableKeys(int key, int x, int y) {
 	else if (key == GLUT_KEY_RIGHT /*GLUT_KEY_RIGHT is constant and contains ASCII for right arrow key*/) {
 		int x, y;
 		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0) //|| (b[1]->getStartOfGame()))
+		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0) //|| (b[1]->getStartOfGame()))
 		{
 			b[1]->setEyesDirection(1);
 			b[1]->setMove(true);
@@ -181,7 +186,7 @@ void NonPrintableKeys(int key, int x, int y) {
 	else if (key == GLUT_KEY_UP/*GLUT_KEY_UP is constant and contains ASCII for up arrow key*/) {
 		int x, y;
 		b[1]->getPosition(x, y);
-		if (x % 10 == 0 && y % 10 == 0)
+		if (x % 10 == 0 && y % 10 == 0 && x % 20 != 0 && y % 20 != 0)
 		{
 			b[1]->setEyesDirection(4);
 			b[1]->setRadian(-3.0);
@@ -194,7 +199,7 @@ void NonPrintableKeys(int key, int x, int y) {
 
 		int x, y;
 		b[1]->getPosition(x, y);
-		if (x % 10 == 0 &&  y % 10 == 0)
+		if (x % 10 == 0 &&  y % 10 == 0 && x % 20 != 0 && y % 20 != 0)
 		{
 			b[1]->setEyesDirection(2);
 			b[1]->setRadian(1.5);
