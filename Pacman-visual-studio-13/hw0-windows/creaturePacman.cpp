@@ -1,6 +1,6 @@
 #include "creaturePacman.h"
 
-creaturePacman::creaturePacman(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const float & pValueRadian) : Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_move(false), m_n_radians(pValueRadian), check(0)//, startOfGame(true)
+creaturePacman::creaturePacman(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const float & pValueRadian) : Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_move(false), m_n_radians(pValueRadian), check(0)
 {
 }
 
@@ -10,8 +10,6 @@ creaturePacman::~creaturePacman()
 
 void creaturePacman::nextMove(void)
 {
-	
-	//this->startOfGame = false;
 	int tempX = this->m_n_xVertex / 20; //it gives -1 x block
 	int tempY = this->m_n_yVertex / 20;	//it gives -1 y block from uper side
 	int currentXVertex = (tempX ) * 20 + 10;

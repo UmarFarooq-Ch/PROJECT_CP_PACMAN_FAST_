@@ -91,6 +91,12 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 	for (int i = 0; i < npmvertices; ++i)
 		glVertex4f(sx + pmvertices[i][0], sy + pmvertices[i][1], 0, 1);
 	glEnd();
+	//Dandi of Pacman
+	int local_variable = b[1]->getDandi();
+	if (local_variable % 2 == 0)
+		DrawCircle(b[1]->getX(), b[1]->getY(), 18, colors[YELLOW]);
+	//End of Dandi
+	//Direction of Pacman
 	switch (b[1]->getEyesDirection())
 	{
 	case 3:	//When pacman is looking left
@@ -104,6 +110,7 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 		DrawCircle(b[1]->getX() + (radius - radius / 2), b[1]->getY() -radius + radius / 2, radius / 10, colors[BLACK]);
 		break;
 	}
+	
 }
 /*
 * Main Canvas drawing function.
@@ -119,10 +126,10 @@ void Display()/**/ {
 	glClearColor(0/*Red Component*/, 0.0/*Green Component*/,
 		0.0/*Blue Component*/, 0 /*Alpha component*/); // Red==Green==Blue==1 --> White Colour
 	glClear(GL_COLOR_BUFFER_BIT); //Update the colors
-	for (int y = 700;y > 0;y -= 20)
-		DrawLine(0, y, 560, y, 1);
-	for (int x = 0; x < 660;x += 20)
-		DrawLine(x, 0, x, 720, 1);
+	//for (int y = 700;y > 0;y -= 20)
+	//	DrawLine(0, y, 560, y, 1);
+	//for (int x = 0; x < 660;x += 20)
+	//	DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
 	int x, y;
 	(*b)->GetInitPinkyPosition(x, y);
@@ -136,6 +143,7 @@ void Display()/**/ {
 	DrawString(x - 60, 680, "Score = 000", colors[5]);
 	//	glPopMatrix();
 	glutSwapBuffers(); // do not modify this line..
+	b[1]->increaseDandi();
 	if (b[1]->getMove())
 	{
 		int local_variable = b[1]->getPendingDirection();

@@ -124,6 +124,7 @@ Board::Board(int xsize, int ysize) {
 	pcolor = CHOCOLATE;
 	bcolor = DARK_BLUE;
 	gcolor = PINK;
+	m_n_pacmanDandi = 0;
 	//set up board
 }
 

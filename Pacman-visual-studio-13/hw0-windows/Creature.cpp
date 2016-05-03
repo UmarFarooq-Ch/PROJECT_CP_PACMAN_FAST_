@@ -11,6 +11,7 @@ Creature::Creature(const int & pX, const int & pY, const string & pNameOfCreatur
 	this->m_s_nameofCreature = pNameOfCreature;
 	this->m_e_c_color = pValue;
 	this->m_b_alive = pAliveStatus;
+	this->m_n_directionPending = NILL_;
 	if (pEyesDirection >= 0 && pEyesDirection <= 3)
 		this->m_n_eyesDirection = pEyesDirection;
 	else

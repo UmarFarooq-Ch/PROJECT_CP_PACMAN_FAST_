@@ -18,6 +18,7 @@ private:
 	int xcellsize, ycellsize;
 	int lwidth;
 	float cwidth;
+	int m_n_pacmanDandi;
 	//array for eating
 	int tp_array[31][28];
 	ColorNames pcolor, bcolor, gcolor;
@@ -59,6 +60,8 @@ public:
 		x = 13 * xcellsize;
 		y = 14 * ycellsize;
 	}
+	inline int getDandi(void) const { return this->m_n_pacmanDandi; }
+	inline void increaseDandi(void) { ++this->m_n_pacmanDandi; }
 	//	int GetMidx
 	int getBoardPart(const int & pXVertex, const int & pYVertex) const; // return the value at location pXVertex, pYVertex in Board_array
 	void setBoardPart(const int & pXVertex, const int & pYVertex, const int & obj);
