@@ -10,7 +10,7 @@ protected:
 	string m_s_nameofCreature;	//member_string
 	ColorNames m_e_c_color;	//member_enum_composition
 	bool m_b_alive;	//member_bool
-	int m_n_directionPending;
+	int m_n_directionPending;	//member_numeric
 	enum eyesDirection
 	{
 		NILL_,	//Creature is looking to user

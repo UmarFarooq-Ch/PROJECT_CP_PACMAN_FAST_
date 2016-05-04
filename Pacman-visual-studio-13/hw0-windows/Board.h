@@ -62,7 +62,6 @@ public:
 	}
 	inline int getDandi(void) const { return this->m_n_pacmanDandi; }
 	inline void increaseDandi(void) { ++this->m_n_pacmanDandi; }
-	//	int GetMidx
 	int getBoardPart(const int & pXVertex, const int & pYVertex) const; // return the value at location pXVertex, pYVertex in Board_array
 	void setBoardPart(const int & pXVertex, const int & pYVertex, const int & obj);
 	virtual void nextMove(void);
@@ -77,8 +76,6 @@ public:
 	virtual inline float getRadian(void) const { return 0; }
 	virtual inline void setRadian(const float & pValueRadian) {}
 	virtual inline int getPendingDirection(void) const { return 0; }
-	//virtual inline bool getStartOfGame(void) const { return false; }
-
 }
 ;
 #endif
