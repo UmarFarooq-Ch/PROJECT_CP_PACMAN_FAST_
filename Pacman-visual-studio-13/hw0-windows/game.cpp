@@ -126,10 +126,10 @@ void Display()/**/ {
 	glClearColor(0/*Red Component*/, 0.0/*Green Component*/,
 		0.0/*Blue Component*/, 0 /*Alpha component*/); // Red==Green==Blue==1 --> White Colour
 	glClear(GL_COLOR_BUFFER_BIT); //Update the colors
-	//for (int y = 700;y > 0;y -= 20)
-	//	DrawLine(0, y, 560, y, 1);
-	//for (int x = 0; x < 660;x += 20)
-	//	DrawLine(x, 0, x, 720, 1);
+	for (int y = 700;y > 0;y -= 20)
+		DrawLine(0, y, 560, y, 1);
+	for (int x = 0; x < 660;x += 20)
+		DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
 	int x, y;
 	(*b)->GetInitPinkyPosition(x, y);

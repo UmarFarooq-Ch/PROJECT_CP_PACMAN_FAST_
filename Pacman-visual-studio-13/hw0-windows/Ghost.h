@@ -14,6 +14,7 @@ protected:
 	int m_n_targetBoxes[8];	//member_numeric
 public:
 	CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus = true, const int & pEyesDirection = NILL_, const int & pGhostMode = NILL_);
+	
 	virtual ~CGhost();
 };
 
