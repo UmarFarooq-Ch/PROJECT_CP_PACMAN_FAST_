@@ -2,16 +2,18 @@
 
 
 
-CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28]) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode)
+CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28], creaturePacman * ptrPACMAN) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode), fixXVertex(pX), fixYVertex(pY)
 {
 	for (int i =0; i < 36;++i)
 		for (int j = 0;j < 28;++j)
 		{
 			blocks_array[i][j] = & array[i][j];
 		}
-	currentTargentxVertex =130;
-	currentTargetyVertex = 630;
+	time = 0;
 	temp = false;
+	m_b_alive = true;
+	index = 0;
+	PACMAN = ptrPACMAN;
 }
 
 inline void CGhost::setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3)
@@ -26,7 +28,7 @@ inline void CGhost::setTargetBoxes(const int & x0, const int & y0, const int & x
 	this->m_n_targetBoxes[7] = y3;
 }
 
-void CGhost::BFS(void)
+bool CGhost::BFS(void)
 {
 	//Cell of Ghost is
 	int xtileOfGhost = m_n_xVertex / 20 + 1;
@@ -44,6 +46,7 @@ void CGhost::BFS(void)
 	bool leftSide = (*blocks_array[ytileOfGhost][xtileOfGhost - 1]).tempN();
 	bool downSide = (*blocks_array[ytileOfGhost - 1][xtileOfGhost]).tempN();
 	bool upSide = (*blocks_array[ytileOfGhost + 1][xtileOfGhost]).tempN();
+	int endStop = 0;
 	// This function will chose 2 points and find the shortest distance betwwen them
 	while (true)
 	{
@@ -55,7 +58,7 @@ void CGhost::BFS(void)
 		{
 			if (blocks_array[ytileOfGhost][xtileOfGhost + 1] != NULL)
 			{
-				if ((*blocks_array[ytileOfGhost][xtileOfGhost + 1]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
+				if ((*blocks_array[ytileOfGhost][xtileOfGhost + 1]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost], endStop) == true)
 				{
 					nextMove = 1;
 					for (int i = 0; i < 36; ++i)
@@ -71,7 +74,7 @@ void CGhost::BFS(void)
 		{
 			if (blocks_array[ytileOfGhost - 1][xtileOfGhost] != NULL)
 			{
-				if ((*blocks_array[ytileOfGhost - 1][xtileOfGhost]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
+				if ((*blocks_array[ytileOfGhost - 1][xtileOfGhost]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost], endStop) == true)
 				{
 					nextMove = 2;
 					for (int i = 0; i < 36; ++i)
@@ -87,7 +90,7 @@ void CGhost::BFS(void)
 		{
 			if (blocks_array[ytileOfGhost][xtileOfGhost - 1] != NULL)
 			{
-				if ((*blocks_array[ytileOfGhost][xtileOfGhost - 1]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
+				if ((*blocks_array[ytileOfGhost][xtileOfGhost - 1]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost], endStop) == true)
 				{
 					nextMove = 3;
 					for (int i = 0; i < 36; ++i)
@@ -103,7 +106,7 @@ void CGhost::BFS(void)
 		{
 			if (blocks_array[ytileOfGhost + 1][xtileOfGhost] != NULL)
 			{
-				if ((*blocks_array[ytileOfGhost + 1][xtileOfGhost]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
+				if ((*blocks_array[ytileOfGhost + 1][xtileOfGhost]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost], endStop) == true)
 				{
 					nextMove = 4;
 					for (int i = 0; i < 36; ++i)
@@ -114,16 +117,31 @@ void CGhost::BFS(void)
 			}
 		}
 	}
+
+	if (endStop == 1 && m_n_ghostMode == SCATTER)
+	{
+		endStop = 0;
+		currentTargentxVertex = m_n_targetBoxes[index] * 20;
+		currentTargetyVertex = m_n_targetBoxes[index + 1] * 20;
+		index += 2;
+		if (index + 1 == 9)
+			index = 0;
+	}
+	return false;
 }
 
 void CGhost::nextMoveGhost(const int & PacmanX, const int & PacmanY)
 {
+	if (m_b_alive == false)
+	{
+		return;
+
+	}
 	this->currentTargentxVertex = PacmanX;
 	this->currentTargetyVertex = PacmanY;
 	if ((m_n_xVertex % 20 == 10 && m_n_yVertex % 20 == 10) || temp == false)
 	{
 		BFS();
-
 		temp = true;
 	}
 	if (nextMove == RIGHT_)
@@ -141,6 +159,21 @@ void CGhost::nextMoveGhost(const int & PacmanX, const int & PacmanY)
 	else if (nextMove == UP_)
 	{
 		m_n_yVertex += 5;
+	}
+	if (abs(m_n_xVertex - PACMAN->getX()) <= 20 && abs(m_n_yVertex - PACMAN->getY()) <= 20)
+	{
+		PACMAN->decreasePacmanLifes();
+		if (PACMAN->getPacmanLifes() > 0)
+		{
+			PACMAN->resetPacman();
+			this->resetGhost();
+			for (int i = 0; i < 36;++i)
+				for (int j = 0;j < 28;++j)
+					(*blocks_array[i][j]).reset();
+
+		}
+		else
+			m_b_alive = false;
 	}
 }
 

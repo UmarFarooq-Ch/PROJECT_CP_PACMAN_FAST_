@@ -130,34 +130,57 @@ void Display()/**/ {
 	glClearColor(0/*Red Component*/, 0.0/*Green Component*/,
 		0.0/*Blue Component*/, 0 /*Alpha component*/); // Red==Green==Blue==1 --> White Colour
 	glClear(GL_COLOR_BUFFER_BIT); //Update the colors
-	for (int y = 700;y > 0;y -= 20)
-		DrawLine(0, y, 560, y, 1);
-	for (int x = 0; x < 660;x += 20)
-		DrawLine(x, 0, x, 720, 1);
+	//for (int y = 700;y > 0;y -= 20)
+	//	DrawLine(0, y, 560, y, 1);
+	//for (int x = 0; x < 660;x += 20)
+	//	DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
 	int x, y;
 	//(*b)->GetInitPinkyPosition(x, y);
 	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 	b[1]->getPosition(x, y);
 	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
-	b[2]->nextMoveGhost(x,y);
+	b[2]->increaseTime();
+
+
+	if (b[2]->getTime() < 200)
+	{
+		//b[1]->getPosition(x, y);
+		b[2]->setGhostMode(1);
+	}
+	else if (b[2]->getTime() >= 200)
+	{
+		b[2]->setGhostMode(2);
+		/////x = 30, y = 70;
+		b[2]->getCurrentTarget(x, y);
+		if (b[2]->getTime() > 600)
+			b[2]->setTimeZero();
+	}
+	b[2]->nextMoveGhost(x, y);
 	b[2]->getPosition(x, y);
 	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 
 
 
 	x = (*b)->GetMidX();
-	DrawString(x - 60, 680, "Score = 000", colors[5]);
+	DrawString(x - 60, 680, "SCORE: " + b[1]->getScore(), colors[5]);
 	//	glPopMatrix();
 	glutSwapBuffers(); // do not modify this line..
 
-	b[1]->increaseDandi();
+	//Below is timer Function implementation
+	//save pacman vertex to ghost class so it will check when ever pacman is detected it will kill
+	/*b[1]->getPosition(x, y);
+	b[2]->setPacmanPosition(x, y);
+*/
+
+	if (b[2]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
+		b[1]->increaseDandi();
 	if (b[1]->getMove())
 	{
 		int local_variable = b[1]->getPendingDirection();
 		if (local_variable != 0)
 			b[1]->setEyesDirection(local_variable);
-		b[1]->nextMove();
+		b[1]->nextMove(b[2]->getAlive());
 		//glutPostRedisplay();
 	}
 	glutPostRedisplay();
@@ -247,9 +270,10 @@ int main(int argc, char*argv[]) {
 		}
 	b = new Board *[3]; // create a new board object to use in the Display Function ...
 	b[0] = new Board;
-	b[1] = new creaturePacman;
+	creaturePacman PaCman;
+	b[1] = &PaCman;
 
-	b[2] = new CGhost(260, 410, "Pinky", RED, true, 0, 2,blocks);
+	b[2] = new CGhost(260, 410, "Pinky", RED, true, 0, 2, blocks, &PaCman);
 	
 	for (int i = 3; i <= 31; ++i)
 		for (int j = 1; j <= 26; ++j)
@@ -290,7 +314,7 @@ int main(int argc, char*argv[]) {
 				blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
 			}
 		}
-	b[2]->setTargetBoxes(1, 3, 1, 12, 6, 12, 12, 3);
+	b[2]->setTargetBoxes(1, 3, 12, 3, 9, 8, 9, 18);
 	int width = 560, height = 720; // i have set my window size to be 800 x 600
 	InitRandomizer(); // seed the random number generator...
 	glutInit(&argc, argv); // initialize the graphics library...

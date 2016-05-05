@@ -15,7 +15,7 @@ public:
 	void initializeNeighbours(CBlock & pR, CBlock &  pD, CBlock & pL, CBlock & pU);
 	void setVertex(const int & pX, const int & pY);
 	void reset(void);
-	bool fire(const int & PX/*to be capture xVertex*/, const int & PY/*to be capture yVertex*/, CBlock & pPre);
+	bool fire(const int & PX/*to be capture xVertex*/, const int & PY/*to be capture yVertex*/, CBlock & pPre, int & endStop);
 	inline bool getMaenCheckHoGyaHun(void) const { return this->maenCheckHoGyaHun; }
 	inline bool getYahanSeAgeKuchNahin(void) const { return this->yahanSeAgeKuchNahi; }
 	inline void setYahanSeAgeKuchNahin(void) { this->yahanSeAgeKuchNahi = true; }

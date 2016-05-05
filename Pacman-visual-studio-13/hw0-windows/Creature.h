@@ -34,5 +34,6 @@ public:
 	void setEyesDirection(const int & pEyesDirection);	
 	inline int getPendingDirection(void) const { return this->m_n_directionPending; }
 	inline ColorNames getColor(void) const { return this->m_e_c_color; }
+	inline bool getAlive(void) const { return m_b_alive; }
 };
 

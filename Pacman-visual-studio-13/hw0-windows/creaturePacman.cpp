@@ -1,24 +1,30 @@
 #include "creaturePacman.h"
+#include "Ghost.h"
 
 creaturePacman::creaturePacman(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const float & pValueRadian) : Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_move(false), m_n_radians(pValueRadian), check(0)
 {
+	score = 0;
+	Lifes = 3;
 }
 
 creaturePacman::~creaturePacman()
 {
 }
 
-void creaturePacman::nextMove(void)
+void creaturePacman::nextMove(const bool & aliveOfPinky)
 {
 	int tempX = this->m_n_xVertex / 20; //it gives -1 x block
 	int tempY = this->m_n_yVertex / 20;	//it gives -1 y block from uper side
 	//int currentXVertex = (tempX ) * 20 + 10;
 	//int currentYVertex = (tempY ) * 20 + 10;
-	cout << "tempX: " << tempX << endl;
-	cout << "tempY: " << tempY << endl;
-	cout << "x: " << m_n_xVertex << endl;
-	cout << "y: " << m_n_yVertex << endl;
+	//cout << "tempX: " << tempX << endl;
+	//cout << "tempY: " << tempY << endl;
+	//cout << "x: " << m_n_xVertex << endl;
+	//cout << "y: " << m_n_yVertex << endl;
 	//now first i will check where is the direction of mouth of pacman
+	if (aliveOfPinky == false)
+		return;
+
 	if (m_n_eyesDirection == LEFT_)
 	{
 		//int nextMidValueOftempX = (tempX) * 20 - 10; cout << "Next MidValue : " << nextMidValueOftempX << endl;
@@ -39,7 +45,7 @@ void creaturePacman::nextMove(void)
 				m_n_xVertex -= 5;
 			++check;
 		}
-		Board::setBoardPart(tempX,35- tempY, 17); //set eatable to moveable empty space
+		//Board::setBoardPart(tempX,35- tempY, 17); //set eatable to moveable empty space
 	}
 
 	else if (m_n_eyesDirection == RIGHT_)
@@ -59,7 +65,7 @@ void creaturePacman::nextMove(void)
 				m_n_xVertex += 5;
 			++check;
 		}
-		Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
+		//Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
 	}
 	else if (m_n_eyesDirection == UP_)
 	{
@@ -78,7 +84,7 @@ void creaturePacman::nextMove(void)
 				m_n_yVertex += 5;
 			++check;
 		}
-		Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
+		//Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
 	}
 	else if (m_n_eyesDirection == DOWN_)
 	{
@@ -97,7 +103,14 @@ void creaturePacman::nextMove(void)
 				m_n_yVertex -= 5;
 			++check;
 		}
-		Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
+		//Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
 	}
+
+	//score Feature
+	if (Board::getBoardPart(tempX, 35 - tempY) == 16)
+		score += 10;
+	else if (Board::getBoardPart(tempX, 35 - tempY) == 18)
+		score += 100;
+	Board::setBoardPart(tempX, 35 - tempY, 17);
 	//cout << "\n........\n";
 }

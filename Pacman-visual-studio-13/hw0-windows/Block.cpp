@@ -31,8 +31,9 @@ void CBlock::reset(void)
 	m_c_predecesor = NULL;
 }
 
-bool CBlock::fire(const int & PX, const int & PY, CBlock & pPre)
+bool CBlock::fire(const int & PX, const int & PY, CBlock & pPre, int & endStop)
 {
+	++endStop;
 	if (m_c_predecesor == NULL)
 	{
 		m_c_predecesor = &pPre;
@@ -55,16 +56,16 @@ bool CBlock::fire(const int & PX, const int & PY, CBlock & pPre)
 
 
 		if (__RIGHT != NULL && __RIGHT->yahanSeAgeKuchNahi == false && m_c_predecesor != __RIGHT)
-			if (__RIGHT->fire(PX, PY, *this) == true)
+			if (__RIGHT->fire(PX, PY, *this, endStop) == true)
 				return true;
 		if (__DOWN != NULL && __DOWN->yahanSeAgeKuchNahi == false && m_c_predecesor != __DOWN)
-			if (__DOWN->fire(PX, PY, *this) == true)
+			if (__DOWN->fire(PX, PY, *this, endStop) == true)
 				return true;
 		if (__LEFT != NULL && __LEFT->yahanSeAgeKuchNahi == false && m_c_predecesor != __LEFT)
-			if (__LEFT->fire(PX, PY, *this) == true)
+			if (__LEFT->fire(PX, PY, *this, endStop) == true)
 				return true;
 		if (__UP != NULL && __UP->yahanSeAgeKuchNahi == false && m_c_predecesor != __UP)
-			if (__UP->fire(PX, PY, *this) == true)
+			if (__UP->fire(PX, PY, *this, endStop) == true)
 				return true;
 		return false;
 	}

@@ -65,7 +65,7 @@ public:
 	inline void increaseDandi(void) { ++this->m_n_pacmanDandi; }
 	int getBoardPart(const int & pXVertex, const int & pYVertex) const; // return the value at location pXVertex, pYVertex in Board_array
 	void setBoardPart(const int & pXVertex, const int & pYVertex, const int & obj);
-	virtual void nextMove(void);
+	virtual void nextMove(const bool & aliveOfPinky);
 	virtual void setMove(const bool & pCheck = false);
 	virtual void setEyesDirection(const int & pEyesDirection);
 	virtual inline int getEyesDirection(void)const { return 0; }
@@ -77,12 +77,23 @@ public:
 	virtual inline float getRadian(void) const { return 0; }
 	virtual inline void setRadian(const float & pValueRadian) {}
 	virtual inline int getPendingDirection(void) const { return 0; }
+	virtual inline bool getAlive() const { return false; }
+	virtual inline string getScore(void) const { return ""; }
+	virtual inline int getPacmanLifes(void)const { return 0; }
+	virtual inline void decreasePacmanLifes(void) { }
+	virtual inline void resetPacman(void) {}
 	//GhostFunctions
 	virtual void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
-	virtual void BFS(void);
+	virtual bool BFS(void);
 	virtual inline void setPredecesorToNull(void) {}
 	virtual void nextMoveGhost(const int & PacmanX, const int & PacmanY);
-
+	virtual inline void increaseTime(void) { }
+	virtual inline void setTimeZero(void) {  }
+	virtual inline int getTime(void) { return 0; }
+	virtual inline int getGhostMode(void) const { return 0; }
+	virtual inline void setGhostMode(const int & pMode) { return; }
+	virtual inline void getCurrentTarget(int & pX, int & pY) const {}
+	//virtual inline void setPacmanPosition(const int & pX, const int & pY) {}
 }
 ;
 #endif

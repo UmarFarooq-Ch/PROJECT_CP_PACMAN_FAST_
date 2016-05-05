@@ -292,9 +292,8 @@ void Board::setBoardPart(const int & pXVertex, const int & pYVertex, const int &
 	return;
 }
 
-void Board::nextMove(void)
+void Board::nextMove(const bool & aliveOfPinky)
 {
-	//virtual function only
 }
 
 void Board::setMove(const bool & pCheck)
@@ -329,8 +328,9 @@ void Board::setTargetBoxes(const int & x0, const int & y0, const int & x1, const
 {
 }
 
-void Board::BFS(void)
+bool Board::BFS(void)
 {
+	return false;
 }
 
 void Board::nextMoveGhost(const int & PacmanX, const int & PacmanY)
