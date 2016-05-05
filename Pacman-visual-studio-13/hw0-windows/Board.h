@@ -60,6 +60,7 @@ public:
 		x = 13 * xcellsize;
 		y = 14 * ycellsize;
 	}
+	virtual inline ColorNames getColor(void) const { return RED; }
 	inline int getDandi(void) const { return this->m_n_pacmanDandi; }
 	inline void increaseDandi(void) { ++this->m_n_pacmanDandi; }
 	int getBoardPart(const int & pXVertex, const int & pYVertex) const; // return the value at location pXVertex, pYVertex in Board_array
@@ -76,6 +77,10 @@ public:
 	virtual inline float getRadian(void) const { return 0; }
 	virtual inline void setRadian(const float & pValueRadian) {}
 	virtual inline int getPendingDirection(void) const { return 0; }
+	//GhostFunctions
+	virtual void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
+	virtual void BFS(void);
+	virtual inline void setPredecesorToNull(void) {}
 }
 ;
 #endif

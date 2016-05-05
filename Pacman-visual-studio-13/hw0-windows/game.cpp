@@ -13,6 +13,8 @@
 #include <iostream>
 #include <string>
 #include "creaturePacman.h"
+#include "Ghost.h"
+#include "Block.h"
 #include<cmath> // for basic math functions such as cos, sin, sqrt
 using namespace std;
 Board **b;
@@ -132,9 +134,10 @@ void Display()/**/ {
 		DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
 	int x, y;
-	(*b)->GetInitPinkyPosition(x, y);
-	DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
-
+	//(*b)->GetInitPinkyPosition(x, y);
+	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+	b[2]->getPosition(x, y);
+	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 	b[1]->getPosition(x, y);
 	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
 
@@ -143,6 +146,7 @@ void Display()/**/ {
 	DrawString(x - 60, 680, "Score = 000", colors[5]);
 	//	glPopMatrix();
 	glutSwapBuffers(); // do not modify this line..
+
 	b[1]->increaseDandi();
 	if (b[1]->getMove())
 	{
@@ -169,35 +173,21 @@ void NonPrintableKeys(int key, int x, int y) {
 		// what to do when left key is pressed...
 
 			b[1]->setEyesDirection(3);
-			//b[1]->setMove(true);
-			//b[1]->setRadian(6.0);
-			//glutPostRedisplay();
-
 	}
+
 	else if (key == GLUT_KEY_RIGHT /*GLUT_KEY_RIGHT is constant and contains ASCII for right arrow key*/) {
 
 			b[1]->setEyesDirection(1);
-			//b[1]->setMove(true);
-			//b[1]->setRadian(-1.2);
-			//glutPostRedisplay();
 	}
+
 	else if (key == GLUT_KEY_UP/*GLUT_KEY_UP is constant and contains ASCII for up arrow key*/) {
 
 			b[1]->setEyesDirection(4);
-			//b[1]->setRadian(-3.0);
-			//b[1]->setMove(true);
-			//glutPostRedisplay();
-
 	}
 
 	else if (key == GLUT_KEY_DOWN/*GLUT_KEY_DOWN is constant and contains ASCII for down arrow key*/) {
 
 			b[1]->setEyesDirection(2);
-			//b[1]->setRadian(1.5);
-			//b[1]->setMove(true);
-			//glutPostRedisplay();
-			//system("pause");
-
 	}
 
 	/* This function calls the Display function to redo the drawing. Whenever you need to redraw just call
@@ -241,9 +231,62 @@ void Timer(int m) {
 * */
 int main(int argc, char*argv[]) {
 
-	b = new Board *[2]; // create a new board object to use in the Display Function ...
-	b[0] = new Board/*creaturePacman*/;
+	///////////////y///x//
+	CBlock blocks[36][28];
+	for (int i = 0, y = 10; i < 36;++i, y += 20)
+		for (int j = 0, x = 10; j < 28;x += 20, ++j)
+		{
+			blocks[i][j].setVertex(x, y);
+			CBlock *temp = NULL;
+			blocks[i][j].initializeNeighbours(*temp, *temp, *temp, *temp);
+			blocks[i][j].setPredecesorToNull();
+		}
+	b = new Board *[3]; // create a new board object to use in the Display Function ...
+	b[0] = new Board;
 	b[1] = new creaturePacman;
+
+	b[2] = new CGhost(260, 410, "Pinky", RED, true, 0, 2,blocks);
+	
+	for (int i = 3; i <= 31; ++i)
+		for (int j = 1; j <= 26; ++j)
+		{
+			int local = b[0]->getBoardPart(j, 35 - i);	//ye if check ker rha he ke ager wo koi chalne wali jaga he tu os ke neighbour save kere warna na kre
+
+			if (local == 16 || local == 17 || local == 18)
+			{
+				CBlock *array[4];
+				int localR = b[0]->getBoardPart(j + 1, 35 - i);
+				//if (i == 3 && j == 1)
+				//b[0]->setBoardPart(j + 1, 35 - i, 17);
+				if (localR == 17 || localR == 16 || localR == 18)
+					array[0] = &blocks[i][j + 1];
+				else
+					array[0] = NULL;
+				int localD = b[0]->getBoardPart(j, 35 - i + 1);
+				/*	if (i == 3 && j == 1)
+						b[0]->setBoardPart(j, 35 - i + 1,17);
+				*/	if (localD == 17 || localD == 16 || localD == 18)
+						array[1] = &blocks[i - 1][j];
+				else
+					array[1] = NULL;
+				int localL = b[0]->getBoardPart(j - 1, 35 - i);
+				//if (i == 3 && j == 1)
+				//	b[0]->setBoardPart(j - 1, 35 - i, 17);
+				if (localL == 17 || localL == 16 || localL == 18)
+					array[2] = &blocks[i][j - 1];
+				else
+					array[2] = NULL;
+				int localU = b[0]->getBoardPart(j, 35 - i - 1);
+				//if (i == 3 && j == 1)
+				//	b[0]->setBoardPart(j, 35 - i - 1, 17);
+				if (localU == 17 || localU == 16 || localU == 18)
+					array[3] = &blocks[i + 1][j];
+				else
+					array[3] = NULL;
+				blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
+			}
+		}
+	b[2]->setTargetBoxes(1, 3, 1, 12, 6, 12, 12, 3);
 	int width = 560, height = 720; // i have set my window size to be 800 x 600
 	InitRandomizer(); // seed the random number generator...
 	glutInit(&argc, argv); // initialize the graphics library...

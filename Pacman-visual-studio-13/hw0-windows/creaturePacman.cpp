@@ -12,12 +12,12 @@ void creaturePacman::nextMove(void)
 {
 	int tempX = this->m_n_xVertex / 20; //it gives -1 x block
 	int tempY = this->m_n_yVertex / 20;	//it gives -1 y block from uper side
-	int currentXVertex = (tempX ) * 20 + 10;
-	int currentYVertex = (tempY ) * 20 + 10;
-	/*cout << "tempX: " << tempX << endl;
+	//int currentXVertex = (tempX ) * 20 + 10;
+	//int currentYVertex = (tempY ) * 20 + 10;
+	cout << "tempX: " << tempX << endl;
 	cout << "tempY: " << tempY << endl;
 	cout << "x: " << m_n_xVertex << endl;
-	cout << "y: " << m_n_yVertex << endl;*/
+	cout << "y: " << m_n_yVertex << endl;
 	//now first i will check where is the direction of mouth of pacman
 	if (m_n_eyesDirection == LEFT_)
 	{
