@@ -333,5 +333,9 @@ void Board::BFS(void)
 {
 }
 
+void Board::nextMoveGhost(const int & PacmanX, const int & PacmanY)
+{
+}
+
 
 

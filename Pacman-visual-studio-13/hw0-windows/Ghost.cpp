@@ -9,8 +9,9 @@ CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, c
 		{
 			blocks_array[i][j] = & array[i][j];
 		}
-	currentTargentxVertex = m_n_targetBoxes[0] * 20 - 10;
-	currentTargetyVertex = m_n_targetBoxes[1] * 20 - 10;
+	currentTargentxVertex =130;
+	currentTargetyVertex = 630;
+	temp = false;
 }
 
 inline void CGhost::setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3)
@@ -28,7 +29,7 @@ inline void CGhost::setTargetBoxes(const int & x0, const int & y0, const int & x
 void CGhost::BFS(void)
 {
 	//Cell of Ghost is
-	int xtileOfGhost = m_n_xVertex / 20;
+	int xtileOfGhost = m_n_xVertex / 20 + 1;
 	int ytileOfGhost = m_n_yVertex / 20 + 1;
 	//int rightSide = Board::getBoardPart(xtileOfGhost + 1, 35 - ytileOfGhost);
 	////Board::setBoardPart(xtileOfGhost + 1, 35 - ytileOfGhost,6);
@@ -70,7 +71,7 @@ void CGhost::BFS(void)
 		{
 			if (blocks_array[ytileOfGhost - 1][xtileOfGhost] != NULL)
 			{
-				if ((*blocks_array[ytileOfGhost][xtileOfGhost + 1]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
+				if ((*blocks_array[ytileOfGhost - 1][xtileOfGhost]).fire(currentTargentxVertex, currentTargetyVertex, *blocks_array[ytileOfGhost][xtileOfGhost]) == true)
 				{
 					nextMove = 2;
 					for (int i = 0; i < 36; ++i)
@@ -112,6 +113,34 @@ void CGhost::BFS(void)
 				}
 			}
 		}
+	}
+}
+
+void CGhost::nextMoveGhost(const int & PacmanX, const int & PacmanY)
+{
+	this->currentTargentxVertex = PacmanX;
+	this->currentTargetyVertex = PacmanY;
+	if ((m_n_xVertex % 20 == 10 && m_n_yVertex % 20 == 10) || temp == false)
+	{
+		BFS();
+
+		temp = true;
+	}
+	if (nextMove == RIGHT_)
+	{
+		m_n_xVertex += 5;
+	}
+	else if (nextMove == DOWN_)
+	{
+		m_n_yVertex -= 5;
+	}
+	else if (nextMove == LEFT_)
+	{
+		m_n_xVertex -= 5;
+	}
+	else if (nextMove == UP_)
+	{
+		m_n_yVertex += 5;
 	}
 }
 

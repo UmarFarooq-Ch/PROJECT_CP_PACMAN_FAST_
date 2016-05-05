@@ -118,7 +118,9 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 * Main Canvas drawing function.
 * */
 
-//Creature *cp;
+//
+//time_t tm = time(0);
+//int t = (int)tm;
 
 void Display()/**/ {
 	// set the background color using function glClearColor.
@@ -136,10 +138,12 @@ void Display()/**/ {
 	int x, y;
 	//(*b)->GetInitPinkyPosition(x, y);
 	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
-	b[2]->getPosition(x, y);
-	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 	b[1]->getPosition(x, y);
 	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
+	b[2]->nextMoveGhost(x,y);
+	b[2]->getPosition(x, y);
+	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+
 
 
 	x = (*b)->GetMidX();
@@ -154,9 +158,9 @@ void Display()/**/ {
 		if (local_variable != 0)
 			b[1]->setEyesDirection(local_variable);
 		b[1]->nextMove();
-		glutPostRedisplay();
+		//glutPostRedisplay();
 	}
-	//glutPostRedisplay();
+	glutPostRedisplay();
 }
 
 /*This function is called (automatically) whenever any non-printable key (such as up-arrow, down-arraw)

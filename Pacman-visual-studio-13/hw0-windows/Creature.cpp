@@ -136,4 +136,3 @@ void Creature::setEyesDirection(const int & pEyesDirection)
 
 	return;
 }
-
