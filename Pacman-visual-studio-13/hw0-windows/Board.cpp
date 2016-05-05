@@ -333,7 +333,7 @@ bool Board::BFS(void)
 	return false;
 }
 
-void Board::nextMoveGhost(const int & PacmanX, const int & PacmanY)
+void Board::nextMoveGhost()
 {
 }
 

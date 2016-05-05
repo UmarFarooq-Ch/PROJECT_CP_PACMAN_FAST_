@@ -86,7 +86,7 @@ public:
 	virtual void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
 	virtual bool BFS(void);
 	virtual inline void setPredecesorToNull(void) {}
-	virtual void nextMoveGhost(const int & PacmanX, const int & PacmanY);
+	virtual void nextMoveGhost();
 	virtual inline void increaseTime(void) { }
 	virtual inline void setTimeZero(void) {  }
 	virtual inline int getTime(void) { return 0; }

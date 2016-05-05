@@ -142,21 +142,19 @@ void Display()/**/ {
 	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
 	b[2]->increaseTime();
 
-
-	if (b[2]->getTime() < 200)
+	if (b[2]->getTime() < 400)
 	{
 		//b[1]->getPosition(x, y);
-		b[2]->setGhostMode(1);
-	}
-	else if (b[2]->getTime() >= 200)
-	{
 		b[2]->setGhostMode(2);
+	}
+	else if (b[2]->getTime() >= 400)
+	{
+		b[2]->setGhostMode(1);
 		/////x = 30, y = 70;
-		b[2]->getCurrentTarget(x, y);
 		if (b[2]->getTime() > 600)
 			b[2]->setTimeZero();
 	}
-	b[2]->nextMoveGhost(x, y);
+	b[2]->nextMoveGhost();
 	b[2]->getPosition(x, y);
 	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 

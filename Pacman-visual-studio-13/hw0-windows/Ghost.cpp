@@ -130,15 +130,25 @@ bool CGhost::BFS(void)
 	return false;
 }
 
-void CGhost::nextMoveGhost(const int & PacmanX, const int & PacmanY)
+void CGhost::nextMoveGhost()
 {
 	if (m_b_alive == false)
 	{
 		return;
 
 	}
-	this->currentTargentxVertex = PacmanX;
-	this->currentTargetyVertex = PacmanY;
+	if (m_n_ghostMode == CHASE)
+	{
+		currentTargentxVertex = PACMAN->getX();
+		currentTargetyVertex = PACMAN->getY();
+	}
+	if (m_n_ghostMode == SCATTER)
+	{
+		currentTargentxVertex = m_n_targetBoxes[index] * 20;
+		currentTargetyVertex = m_n_targetBoxes[index + 1] * 20;
+	}
+	//this->currentTargentxVertex = PacmanX;
+	//this->currentTargetyVertex = PacmanY;
 	if ((m_n_xVertex % 20 == 10 && m_n_yVertex % 20 == 10) || temp == false)
 	{
 		BFS();

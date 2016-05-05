@@ -26,7 +26,7 @@ public:
 	CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus = true, const int & pEyesDirection = NILL_, const int & pGhostMode = NILL_, CBlock array[][28] = NULL, creaturePacman * ptrPACMAN = NULL);
 	void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
 	bool BFS(void);
-	void nextMoveGhost(const int & PacmanX, const int & PacmanY);
+	void nextMoveGhost();
 	virtual ~CGhost();
 	inline void increaseTime(void) { ++time; }
 	inline void setTimeZero(void) { time = 0; }
