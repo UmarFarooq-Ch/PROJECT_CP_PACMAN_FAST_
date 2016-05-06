@@ -47,6 +47,7 @@ bool CGhost::BFS(void)
 	bool downSide = (*blocks_array[ytileOfGhost - 1][xtileOfGhost]).tempN();
 	bool upSide = (*blocks_array[ytileOfGhost + 1][xtileOfGhost]).tempN();
 	int endStop = 0;
+	bool nofirstTime = false;
 	// This function will chose 2 points and find the shortest distance betwwen them
 	while (true)
 	{
@@ -54,7 +55,7 @@ bool CGhost::BFS(void)
 		// Starting from right side
 
 		//for right
-		if (rightSide == false)//16 || rightSide == 17 || rightSide == 18)
+		if (rightSide == false)// && nextMove!= 3)// || nofirstTime))//16 || rightSide == 17 || rightSide == 18)
 		{
 			if (blocks_array[ytileOfGhost][xtileOfGhost + 1] != NULL)
 			{
@@ -70,7 +71,7 @@ bool CGhost::BFS(void)
 		}
 
 		//for Down
-		if (downSide == false)//16 || downSide == 17 || downSide == 18)
+		if (downSide == false)// && nextMove != 4)//16 || downSide == 17 || downSide == 18)
 		{
 			if (blocks_array[ytileOfGhost - 1][xtileOfGhost] != NULL)
 			{
@@ -86,7 +87,7 @@ bool CGhost::BFS(void)
 		}
 
 		//for left
-		if (leftSide == false)//16 || leftSide == 17 || leftSide == 18)
+		if (leftSide == false)// && nextMove != 1)//16 || leftSide == 17 || leftSide == 18)
 		{
 			if (blocks_array[ytileOfGhost][xtileOfGhost - 1] != NULL)
 			{
@@ -102,7 +103,7 @@ bool CGhost::BFS(void)
 		}
 
 		//for up
-		if (upSide == false)//16 || upSide == 17 || upSide == 18)
+		if (upSide == false)// && nextMove != 2)//16 || upSide == 17 || upSide == 18)
 		{
 			if (blocks_array[ytileOfGhost + 1][xtileOfGhost] != NULL)
 			{

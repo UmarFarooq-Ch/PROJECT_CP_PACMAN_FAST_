@@ -15,9 +15,10 @@
 #include "creaturePacman.h"
 #include "Ghost.h"
 #include "Block.h"
+#include "Objects.h"
 #include<cmath> // for basic math functions such as cos, sin, sqrt
 using namespace std;
-Board **b;
+CObjects *b;
 // seed the random numbers generator by current time (see the documentation of srand for further help)...
 
 /* Function sets canvas size (drawing area) in pixels...
@@ -75,7 +76,7 @@ GLfloat pmvertices[npmvertices][2];
 void InitPMVertices(float radius) {
 
 	float hdegree = (M_PI - M_PI / 2.0) / 360.0;
-	float angle = M_PI + M_PI / (b[1]->getRadian());
+	float angle = M_PI + M_PI / (b[0].B[1]->getRadian());
 	for (int i = 0; i < npmvertices; ++i) {
 		pmvertices[i][0] = radius * cos(angle);
 		pmvertices[i][1] = radius * sin(angle);
@@ -95,22 +96,22 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 	glEnd();
 
 	//Dandi of Pacman
-	int local_variable = b[1]->getDandi();
+	int local_variable = b[0].B[1]->getDandi();
 	if (local_variable % 2 == 0)
-		DrawCircle(b[1]->getX(), b[1]->getY(), 18, colors[YELLOW]);
+		DrawCircle(b[0].B[1]->getX(), b[0].B[1]->getY(), 18, colors[YELLOW]);
 	//End of Dandi
 	//Direction of Pacman
-	switch (b[1]->getEyesDirection())
+	switch (b[0].B[1]->getEyesDirection())
 	{
 	case 3:	//When pacman is looking left
 	case 4:	//when pacman is looking upward
-		DrawCircle(b[1]->getX() - radius + radius / 2, b[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
+		DrawCircle(b[0].B[1]->getX() - radius + radius / 2, b[0].B[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
 		break;
 	case 1:	//when pacman is looking right
-		DrawCircle(b[1]->getX() + (radius - radius / 2), b[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
+		DrawCircle(b[0].B[1]->getX() + (radius - radius / 2), b[0].B[1]->getY() + (radius - radius / 2), radius / 10, colors[BLACK]);
 		break;
 	case 2:	//when pacman is looking down
-		DrawCircle(b[1]->getX() + (radius - radius / 2), b[1]->getY() -radius + radius / 2, radius / 10, colors[BLACK]);
+		DrawCircle(b[0].B[1]->getX() + (radius - radius / 2), b[0].B[1]->getY() -radius + radius / 2, radius / 10, colors[BLACK]);
 		break;
 	}
 	
@@ -135,18 +136,18 @@ void Display()/**/ {
 	//	DrawLine(0, y, 560, y, 1);
 	//for (int x = 0; x < 660;x += 20)
 	//	DrawLine(x, 0, x, 720, 1);
-	(*b)->Draw();
+	b[0].B[0]->Draw();
 	
-	if (b[1]->getNumberOfFood() >= 245)
+	if (b[0].B[1]->getNumberOfFood() >= 245)
 	{
 		for (int i = 1; i < 6; ++i)
 		{
-			b[i]->setAlive(false);
+			b[0].B[i]->setAlive(false);
 		}
 			DrawCircle(280, 360, 250, colors[WHITE]);
 			DrawString(215, 350, "YOU WON", colors[BLACK]);
 	}
-	switch (b[1]->getPacmanLifes())
+	switch (b[0].B[1]->getPacmanLifes())
 	{
 	case 3:
 		DrawCircle(100, 30, 18, colors[YELLOW]);
@@ -164,171 +165,171 @@ void Display()/**/ {
 		DrawCircle(280, 360, 100, colors[WHITE]);
 		DrawString(205, 350, "GAME OVER", colors[BLACK]);
 	}	
-	if (b[1])
+	//if (b[1])
 	//Conditions for BonusFood
-	if (b[1]->getBonusFood())
+	if (b[0].B[1]->getBonusFood())
 	{
 		for (int i = 2;i < 6;++i)
 		{
-			b[i]->setGhostMode(3);
-			b[i]->frightenedMode();
+			b[0].B[i]->setGhostMode(3);
+			b[0].B[i]->frightenedMode();
 		}
-		b[1]->setBonusFoood(false);
-		b[1]->setTimeZero();
+		b[0].B[1]->setBonusFoood(false);
+		b[0].B[1]->setTimeZero();
 	}
-	b[1]->increaseTime();
+	b[0].B[1]->increaseTime();
 	//When Pacman eates bonus food then the timer of pacman set to zero
 	//and pacman remaining lifes will be noted to variable 'lifesWhenEatedBonusFood'
 	//if this lifesWhenEatedBonusFood and actual pacman life remain same then we will
 	//limit this ability of pacman by value of 150
 	//if time increased by 150 then stopFreightendMode of ghost(who are in frientened mode) will be called
-	if (b[1]->getLifeWhenBonusEated() == b[1]->getPacmanLifes())
+	if (b[0].B[1]->getLifeWhenBonusEated() == b[0].B[1]->getPacmanLifes())
 	{
-		if (b[1]->getTime() > 150)
+		if (b[0].B[1]->getTime() > 150)
 		{
 			for (int i = 2; i < 6;++i)
 			{
-				if (b[i]->getGhostMode() == 3)
-					b[i]->stopFrightenedMode();
+				if (b[0].B[i]->getGhostMode() == 3)
+					b[0].B[i]->stopFrightenedMode();
 			}
-			b[1]->setLifeWhenBonusEated(0);
+			b[0].B[1]->setLifeWhenBonusEated(0);
 		}
 	}
-	if (b[1]->getLifeWhenBonusEated() > b[1]->getPacmanLifes())
+	if (b[0].B[1]->getLifeWhenBonusEated() > b[0].B[1]->getPacmanLifes())
 	{
-		b[2]->setReset(true);
+		b[0].B[2]->setReset(true);
 	}
 	int x, y;
-	//(*b)->GetInitPinkyPosition(x, y);
-	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
-	b[1]->getPosition(x, y);
-	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
+	//b[0].B[0]->GetInitPinkyPosition(x, y);
+	//DrawGhost(x, y, PINK, 2 * b[0].B[0]->GetCellSize(), 2 * b[0].B[0]->GetCellSize());
+	b[0].B[1]->getPosition(x, y);
+	DrawPacMan(x, y, b[0].B[0]->GetCellSize() - 2, YELLOW);
 	
 	
-	b[2]->increaseTime();
+	b[0].B[2]->increaseTime();
 
-	if (b[2]->getTime() < 300 && b[2]->getGhostMode() != 3)
+	if (b[0].B[2]->getTime() < 300 && b[0].B[2]->getGhostMode() != 3)
 	{
-		//b[1]->getPosition(x, y);
-		b[2]->setGhostMode(1);
+		//b[0].B[1]->getPosition(x, y);
+		b[0].B[2]->setGhostMode(1);
 	}
-	else if (b[2]->getTime() >= 300 && b[2]->getGhostMode() != 3)
+	else if (b[0].B[2]->getTime() >= 300 && b[0].B[2]->getGhostMode() != 3)
 	{
-		b[2]->setGhostMode(2);
+		b[0].B[2]->setGhostMode(2);
 		/////x = 30, y = 70;
-		if (b[2]->getTime() > 450)
-			b[2]->setTimeZero();
+		if (b[0].B[2]->getTime() > 450)
+			b[0].B[2]->setTimeZero();
 	}
-	b[2]->nextMoveGhost();
-	b[2]->getPosition(x, y);
-	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+	b[0].B[2]->nextMoveGhost();
+	b[0].B[2]->getPosition(x, y);
+	DrawGhost(x, y, b[0].B[2]->getColor(), 2 * b[0].B[0]->GetCellSize(), 2 * b[0].B[0]->GetCellSize());
 
 	//for inky
-	b[3]->increaseTime();
+	b[0].B[3]->increaseTime();
 
 
 
-	if (b[3]->getTime() < 400 && b[3]->getGhostMode() != 3)
+	if (b[0].B[3]->getTime() < 400 && b[0].B[3]->getGhostMode() != 3)
 	{
-		//b[1]->getPosition(x, y);
-		b[3]->setGhostMode(2);
+		//b[0].B[1]->getPosition(x, y);
+		b[0].B[3]->setGhostMode(2);
 	}
-	else if (b[3]->getTime() >= 400 && b[3]->getGhostMode() != 3)
+	else if (b[0].B[3]->getTime() >= 400 && b[0].B[3]->getGhostMode() != 3)
 	{
-		b[3]->setGhostMode(1);
+		b[0].B[3]->setGhostMode(1);
 		/////x = 30, y = 70;
-		if (b[3]->getTime() > 600)
-			b[3]->setTimeZero();
+		if (b[0].B[3]->getTime() > 600)
+			b[0].B[3]->setTimeZero();
 	}
-	b[3]->nextMoveGhost();
-	b[3]->getPosition(x, y);
-	DrawGhost(x, y, b[3]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+	b[0].B[3]->nextMoveGhost();
+	b[0].B[3]->getPosition(x, y);
+	DrawGhost(x, y, b[0].B[3]->getColor(), 2 * b[0].B[0]->GetCellSize(), 2 * b[0].B[0]->GetCellSize());
 
 
 	//for Pinky
-	b[4]->increaseTime();
+	b[0].B[4]->increaseTime();
 
-	if (b[4]->getTime() < 400 && b[4]->getGhostMode() != 3)
+	if (b[0].B[4]->getTime() < 400 && b[0].B[4]->getGhostMode() != 3)
 	{
-		//b[1]->getPosition(x, y);
-		b[4]->setGhostMode(2);
+		//b[0].B[1]->getPosition(x, y);
+		b[0].B[4]->setGhostMode(2);
 	}
-	else if (b[4]->getTime() >= 400 && b[4]->getGhostMode() != 3)
+	else if (b[0].B[4]->getTime() >= 400 && b[0].B[4]->getGhostMode() != 3)
 	{
-		b[3]->setGhostMode(1);
+		b[0].B[3]->setGhostMode(1);
 		/////x = 30, y = 70;
-		if (b[4]->getTime() > 600)
-			b[4]->setTimeZero();
+		if (b[0].B[4]->getTime() > 600)
+			b[0].B[4]->setTimeZero();
 	}
-	b[4]->nextMoveGhost();
-	b[4]->getPosition(x, y);
-	DrawGhost(x, y, b[4]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+	b[0].B[4]->nextMoveGhost();
+	b[0].B[4]->getPosition(x, y);
+	DrawGhost(x, y, b[0].B[4]->getColor(), 2 * b[0].B[0]->GetCellSize(), 2 * b[0].B[0]->GetCellSize());
 
 
 
 	//for cylide
-	b[5]->increaseTime();
+	b[0].B[5]->increaseTime();
 
-	if (b[5]->getTime() < 200 && b[5]->getGhostMode() != 3)
+	if (b[0].B[5]->getTime() < 200 && b[0].B[5]->getGhostMode() != 3)
 	{
-		//b[1]->getPosition(x, y);
-		b[5]->setGhostMode(1);
+		//b[0].B[1]->getPosition(x, y);
+		b[0].B[5]->setGhostMode(1);
 	}
-	else if (b[5]->getTime() >= 200 && b[5]->getGhostMode() != 3)
+	else if (b[0].B[5]->getTime() >= 200 && b[0].B[5]->getGhostMode() != 3)
 	{
-		b[5]->setGhostMode(2);
+		b[0].B[5]->setGhostMode(2);
 		/////x = 30, y = 70;
-		if (b[5]->getTime() > 500)
-			b[5]->setTimeZero();
+		if (b[0].B[5]->getTime() > 500)
+			b[0].B[5]->setTimeZero();
 	}
-	b[5]->nextMoveGhost();
-	b[5]->getPosition(x, y);
-	DrawGhost(x, y, b[5]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+	b[0].B[5]->nextMoveGhost();
+	b[0].B[5]->getPosition(x, y);
+	DrawGhost(x, y, b[0].B[5]->getColor(), 2 * b[0].B[0]->GetCellSize(), 2 * b[0].B[0]->GetCellSize());
 
 
-	x = (*b)->GetMidX();
-	DrawString(x - 60, 680, "SCORE: " + b[1]->getScore(), colors[5]);
+	x = b[0].B[0]->GetMidX();
+	DrawString(x - 60, 680, "SCORE: " + b[0].B[1]->getScore(), colors[5]);
 	//	glPopMatrix();
 	glutSwapBuffers(); // do not modify this line..
 
 	//Below is timer Function implementation
 	//save pacman vertex to ghost class so it will check when ever pacman is detected it will kill
-	/*b[1]->getPosition(x, y);
-	b[2]->setPacmanPosition(x, y);
+	/*b[0].B[1]->getPosition(x, y);
+	b[0].B[2]->setPacmanPosition(x, y);
 */
 
-	//if (b[2]->getAlive() && b[3]->getAlive() && b[4]->getAlive() && b[5]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
-	b[1]->increaseDandi();
-	if (b[1]->getMove())
+	//if (b[0].B[2]->getAlive() && b[0].B[3]->getAlive() && b[0].B[4]->getAlive() && b[0].B[5]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
+	b[0].B[1]->increaseDandi();
+	if (b[0].B[1]->getMove())
 	{
-		int local_variable = b[1]->getPendingDirection();
+		int local_variable = b[0].B[1]->getPendingDirection();
 		if (local_variable != 0)
-			b[1]->setEyesDirection(local_variable);
-		b[1]->nextMove(b[2]->getAlive());
+			b[0].B[1]->setEyesDirection(local_variable);
+		b[0].B[1]->nextMove(b[0].B[2]->getAlive());
 		//glutPostRedisplay();
 	}
 
 
 	//Conditions to start game of 2 other pacman
-	if (b[1]->getNumberOfFood() >= 82)
-		b[4]->setCanMove(true);
-	if (b[1]->getNumberOfFood() >= 163)
-		b[5]->setCanMove(true);
+	if (b[0].B[1]->getNumberOfFood() >= 82)
+		b[0].B[4]->setCanMove(true);
+	if (b[0].B[1]->getNumberOfFood() >= 163)
+		b[0].B[5]->setCanMove(true);
 
 
 	//conditions for GameOver
 
-	if (b[1]->getPacmanLifes() <= 0)
+	if (b[0].B[1]->getPacmanLifes() <= 0)
 	{
 		for (int i = 1;i < 6;++i)
-			b[i]->setAlive(false);
+			b[0].B[i]->setAlive(false);
 	}
 	for (int i = 2; i <6 ;++i)
-		if (b[i]->getReset())
+		if (b[0].B[i]->getReset())
 		{
-			b[1]->resetPacman();
+			b[0].B[1]->resetPacman();
 			for (int x = 0; x < 6;++x)
-				b[x]->resetGhost();
+				b[0].B[x]->resetGhost();
 		}
 	glutPostRedisplay();
 }
@@ -346,22 +347,22 @@ void NonPrintableKeys(int key, int x, int y) {
 	if (key == GLUT_KEY_LEFT /*GLUT_KEY_LEFT is constant and contains ASCII for left arrow key*/) {
 		// what to do when left key is pressed...
 
-			b[1]->setEyesDirection(3);
+			b[0].B[1]->setEyesDirection(3);
 	}
 
 	else if (key == GLUT_KEY_RIGHT /*GLUT_KEY_RIGHT is constant and contains ASCII for right arrow key*/) {
 
-			b[1]->setEyesDirection(1);
+			b[0].B[1]->setEyesDirection(1);
 	}
 
 	else if (key == GLUT_KEY_UP/*GLUT_KEY_UP is constant and contains ASCII for up arrow key*/) {
 
-			b[1]->setEyesDirection(4);
+			b[0].B[1]->setEyesDirection(4);
 	}
 
 	else if (key == GLUT_KEY_DOWN/*GLUT_KEY_DOWN is constant and contains ASCII for down arrow key*/) {
 
-			b[1]->setEyesDirection(2);
+			b[0].B[1]->setEyesDirection(2);
 	}
 
 	/* This function calls the Display function to redo the drawing. Whenever you need to redraw just call
@@ -385,7 +386,7 @@ void PrintableKeys(unsigned char key, int x, int y) {
 		system("pause");
 
 	if (key == 82 || key == 114)
-		b[2]->setReset(true);
+		b[0].B[2]->setReset(true);
 }
 
 /*
@@ -397,9 +398,9 @@ void PrintableKeys(unsigned char key, int x, int y) {
 * */
 void Timer(int m) {
 	// implement your functionality here
-	//if (b[1]->getMove())
+	//if (b[0].B[1]->getMove())
 	//{
-	//	b[1]->nextMove();
+	//	b[0].B[1]->nextMove();
 	//	glutPostRedisplay();
 	//}
 	// once again we tell the library to call our Timer function after next 1000/FPS
@@ -411,83 +412,84 @@ void Timer(int m) {
 * */
 int main(int argc, char*argv[]) {
 
+	b = new CObjects;
 	///////////////y///x//
-	CBlock blocks[36][28];
-	for (int i = 0, y = 10; i < 36;++i, y += 20)
-		for (int j = 0, x = 10; j < 28;x += 20, ++j)
-		{
-			blocks[i][j].setVertex(x, y);
-			CBlock *temp = NULL;
-			blocks[i][j].initializeNeighbours(*temp, *temp, *temp, *temp);
-			blocks[i][j].setPredecesorToNull();
-		}
-	b = new Board *[6]; // create a new board object to use in the Display Function ...
-	b[0] = new Board;
-	creaturePacman PaCman;
-	b[1] = &PaCman;
+	//CBlock blocks[36][28];
+	//for (int i = 0, y = 10; i < 36;++i, y += 20)
+	//	for (int j = 0, x = 10; j < 28;x += 20, ++j)
+	//	{
+	//		blocks[i][j].setVertex(x, y);
+	//		CBlock *temp = NULL;
+	//		blocks[i][j].initializeNeighbours(*temp, *temp, *temp, *temp);
+	//		blocks[i][j].setPredecesorToNull();
+	//	}
+	//b = new Board *[6]; // create a new board object to use in the Display Function ...
+	//b[0] = new Board;
+	//creaturePacman PaCman;
+	//b[1] = &PaCman;
 
 
-	b[2] = new CGhost(260, 410, "BLINKY", RED, true, 0, 2, blocks, &PaCman, true);
-	b[3] = new CGhost(260, 350, "INKY",LIGHT_SKY_BLUE, true, 0, 2, blocks, &PaCman, true);
-	b[4] = new CGhost(220, 350, "PINKY", LIGHT_PINK, true, 0, 2, blocks, &PaCman);
-	b[5] = new CGhost(300, 350, "CYLIDE", SANDY_BROWN, true, 0, 2, blocks, &PaCman);
-	for (int i = 3; i <= 31; ++i)
-		for (int j = 1; j <= 26; ++j)
-		{
-			int local = b[0]->getBoardPart(j, 35 - i);	//ye if check ker rha he ke ager wo koi chalne wali jaga he tu os ke neighbour save kere warna na kre
+	//b[2] = new CGhost(260, 410, "BLINKY", RED, true, 0, 2, blocks, &PaCman, true);
+	//b[3] = new CGhost(260, 350, "INKY",LIGHT_SKY_BLUE, true, 0, 2, blocks, &PaCman, true);
+	//b[4] = new CGhost(220, 350, "PINKY", LIGHT_PINK, true, 0, 2, blocks, &PaCman);
+	//b[5] = new CGhost(300, 350, "CYLIDE", SANDY_BROWN, true, 0, 2, blocks, &PaCman);
+	//for (int i = 3; i <= 31; ++i)
+	//	for (int j = 1; j <= 26; ++j)
+	//	{
+	//		int local = b[0].B[0]->getBoardPart(j, 35 - i);	//ye if check ker rha he ke ager wo koi chalne wali jaga he tu os ke neighbour save kere warna na kre
 
-			if (local == 16 || local == 17 || local == 18)
-			{
-				CBlock *array[4];
-				int localR = b[0]->getBoardPart(j + 1, 35 - i);
-				//if (i == 3 && j == 1)
-				//b[0]->setBoardPart(j + 1, 35 - i, 17);
-				if (localR == 17 || localR == 16 || localR == 18)
-					array[0] = &blocks[i][j + 1];
-				else
-					array[0] = NULL;
-				int localD = b[0]->getBoardPart(j, 35 - i + 1);
-				/*	if (i == 3 && j == 1)
-						b[0]->setBoardPart(j, 35 - i + 1,17);
-				*/	if (localD == 17 || localD == 16 || localD == 18)
-						array[1] = &blocks[i - 1][j];
-				else
-					array[1] = NULL;
-				int localL = b[0]->getBoardPart(j - 1, 35 - i);
-				//if (i == 3 && j == 1)
-				//	b[0]->setBoardPart(j - 1, 35 - i, 17);
-				if (localL == 17 || localL == 16 || localL == 18)
-					array[2] = &blocks[i][j - 1];
-				else
-					array[2] = NULL;
-				int localU = b[0]->getBoardPart(j, 35 - i - 1);
-				//if (i == 3 && j == 1)
-				//	b[0]->setBoardPart(j, 35 - i - 1, 17);
-				if (localU == 17 || localU == 16 || localU == 18)
-					array[3] = &blocks[i + 1][j];
-				else
-					array[3] = NULL;
-				blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
-			}
-		}
-	//Manually Initializing some blocks
-	CBlock *tempEmptyBlock = NULL;
-	blocks[18][1].initializeNeighbours(blocks[18][2], *tempEmptyBlock, blocks[18][0], *tempEmptyBlock);
-	blocks[18][0].initializeNeighbours(blocks[18][1], *tempEmptyBlock, blocks[18][27], *tempEmptyBlock);
-	blocks[18][27].initializeNeighbours(blocks[18][0], *tempEmptyBlock, blocks[18][26], *tempEmptyBlock);
-	blocks[18][26].initializeNeighbours(blocks[18][27], *tempEmptyBlock, blocks[18][25], *tempEmptyBlock);
-	blocks[18][11].initializeNeighbours(blocks[18][12], *tempEmptyBlock, *tempEmptyBlock, *tempEmptyBlock);
-	blocks[18][12].initializeNeighbours(blocks[18][13], *tempEmptyBlock, blocks[18][11], *tempEmptyBlock);
-	blocks[18][13].initializeNeighbours(blocks[18][14], *tempEmptyBlock, blocks[18][12], blocks[19][13]);
-	blocks[18][14].initializeNeighbours(blocks[18][15], *tempEmptyBlock, blocks[18][13], *tempEmptyBlock);
-	blocks[18][15].initializeNeighbours(blocks[18][16], *tempEmptyBlock, blocks[18][14], *tempEmptyBlock);
-	blocks[18][16].initializeNeighbours(*tempEmptyBlock, *tempEmptyBlock, blocks[18][15], *tempEmptyBlock);
-	blocks[19][13].initializeNeighbours(*tempEmptyBlock, blocks[18][13], *tempEmptyBlock, blocks[20][13]);
-	blocks[20][13].initializeNeighbours(*tempEmptyBlock, blocks[19][13], *tempEmptyBlock, blocks[21][13]);
-	b[2]->setTargetBoxes(1, 4, 12, 3, 9, 8, 9, 18);
-	b[3]->setTargetBoxes(12, 30, 1, 30, 3, 24, 12, 21);
-	b[4]->setTargetBoxes(15, 30, 21, 24, 19, 18, 26, 24);
-	b[5]->setTargetBoxes(26, 11, 26, 3, 15, 5, 15, 12);
+	//		if (local == 16 || local == 17 || local == 18)
+	//		{
+	//			CBlock *array[4];
+	//			int localR = b[0].B[0]->getBoardPart(j + 1, 35 - i);
+	//			//if (i == 3 && j == 1)
+	//			//b[0].B[0]->setBoardPart(j + 1, 35 - i, 17);
+	//			if (localR == 17 || localR == 16 || localR == 18)
+	//				array[0] = &blocks[i][j + 1];
+	//			else
+	//				array[0] = NULL;
+	//			int localD = b[0].B[0]->getBoardPart(j, 35 - i + 1);
+	//			/*	if (i == 3 && j == 1)
+	//					b[0].B[0]->setBoardPart(j, 35 - i + 1,17);
+	//			*/	if (localD == 17 || localD == 16 || localD == 18)
+	//					array[1] = &blocks[i - 1][j];
+	//			else
+	//				array[1] = NULL;
+	//			int localL = b[0].B[0]->getBoardPart(j - 1, 35 - i);
+	//			//if (i == 3 && j == 1)
+	//			//	b[0].B[0]->setBoardPart(j - 1, 35 - i, 17);
+	//			if (localL == 17 || localL == 16 || localL == 18)
+	//				array[2] = &blocks[i][j - 1];
+	//			else
+	//				array[2] = NULL;
+	//			int localU = b[0].B[0]->getBoardPart(j, 35 - i - 1);
+	//			//if (i == 3 && j == 1)
+	//			//	b[0].B[0]->setBoardPart(j, 35 - i - 1, 17);
+	//			if (localU == 17 || localU == 16 || localU == 18)
+	//				array[3] = &blocks[i + 1][j];
+	//			else
+	//				array[3] = NULL;
+	//			blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
+	//		}
+	//	}
+	////Manually Initializing some blocks
+	//CBlock *tempEmptyBlock = NULL;
+	//blocks[18][1].initializeNeighbours(blocks[18][2], *tempEmptyBlock, blocks[18][0], *tempEmptyBlock);
+	//blocks[18][0].initializeNeighbours(blocks[18][1], *tempEmptyBlock, blocks[18][27], *tempEmptyBlock);
+	//blocks[18][27].initializeNeighbours(blocks[18][0], *tempEmptyBlock, blocks[18][26], *tempEmptyBlock);
+	//blocks[18][26].initializeNeighbours(blocks[18][27], *tempEmptyBlock, blocks[18][25], *tempEmptyBlock);
+	//blocks[18][11].initializeNeighbours(blocks[18][12], *tempEmptyBlock, *tempEmptyBlock, *tempEmptyBlock);
+	//blocks[18][12].initializeNeighbours(blocks[18][13], *tempEmptyBlock, blocks[18][11], *tempEmptyBlock);
+	//blocks[18][13].initializeNeighbours(blocks[18][14], *tempEmptyBlock, blocks[18][12], blocks[19][13]);
+	//blocks[18][14].initializeNeighbours(blocks[18][15], *tempEmptyBlock, blocks[18][13], *tempEmptyBlock);
+	//blocks[18][15].initializeNeighbours(blocks[18][16], *tempEmptyBlock, blocks[18][14], *tempEmptyBlock);
+	//blocks[18][16].initializeNeighbours(*tempEmptyBlock, *tempEmptyBlock, blocks[18][15], *tempEmptyBlock);
+	//blocks[19][13].initializeNeighbours(*tempEmptyBlock, blocks[18][13], *tempEmptyBlock, blocks[20][13]);
+	//blocks[20][13].initializeNeighbours(*tempEmptyBlock, blocks[19][13], *tempEmptyBlock, blocks[21][13]);
+	//b[0].B[2]->setTargetBoxes(1, 4, 12, 3, 9, 8, 9, 18);
+	//b[0].B[3]->setTargetBoxes(12, 30, 1, 30, 3, 24, 12, 21);
+	//b[0].B[4]->setTargetBoxes(15, 30, 21, 24, 19, 18, 26, 24);
+	//b[0].B[5]->setTargetBoxes(26, 11, 26, 3, 15, 5, 15, 12);
 	int width = 560, height = 720; // i have set my window size to be 800 x 600
 	InitRandomizer(); // seed the random number generator...
 	glutInit(&argc, argv); // initialize the graphics library...

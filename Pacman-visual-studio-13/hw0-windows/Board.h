@@ -6,13 +6,13 @@
 */
 #ifndef _BOARD_H_
 #define _BOARD_H_
-
 #include <gl/glew.h>
 #include <GL/glut.h>
 #include <iostream>
 #include "util.h"
 using namespace std;
-class Board {
+class Board
+{
 private:
 	int pebbles_left;
 	int xcellsize, ycellsize;
