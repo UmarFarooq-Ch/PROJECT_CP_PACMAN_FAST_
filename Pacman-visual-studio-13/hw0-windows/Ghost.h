@@ -20,10 +20,11 @@ protected:
 	int nextMove;
 	bool temp;
 	int time;
+	bool canMove;//this variable is true when noOfFood remains less then 30 according to different ghost
 	int index; // ye variable targetBox ke index ko change kerna ke liye he
 	CBlock  *blocks_array[36][28];
 public:
-	CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus = true, const int & pEyesDirection = NILL_, const int & pGhostMode = NILL_, CBlock array[][28] = NULL, creaturePacman * ptrPACMAN = NULL);
+	CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus = true, const int & pEyesDirection = NILL_, const int & pGhostMode = NILL_, CBlock array[][28] = NULL, creaturePacman * ptrPACMAN = NULL, const bool & pCanMove = false);
 	void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
 	bool BFS(void);
 	void nextMoveGhost();
@@ -39,11 +40,13 @@ public:
 		m_n_ghostMode = SCATTER;
 		m_n_xVertex = fixXVertex;
 		m_n_yVertex = fixYVertex;
+		m_b_reset = false;
 		m_b_alive = true;
 		temp = false;
 		time = 0;
 		index = 0;
 		//nextMoveGhost(20, 60);
 	}
+	inline void setCanMove(const bool & pM) { canMove = pM; }
 };
 

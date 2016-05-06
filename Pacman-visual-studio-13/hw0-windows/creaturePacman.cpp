@@ -5,6 +5,8 @@ creaturePacman::creaturePacman(const int & pX, const int & pY, const string & pN
 {
 	score = 0;
 	Lifes = 3;
+	numberOfFood = 0;
+	m_n_pacmanDandi = 0;
 }
 
 creaturePacman::~creaturePacman()
@@ -13,6 +15,9 @@ creaturePacman::~creaturePacman()
 
 void creaturePacman::nextMove(const bool & aliveOfPinky)
 {
+	if (!m_b_alive)
+		return;
+
 	int tempX = this->m_n_xVertex / 20; //it gives -1 x block
 	int tempY = this->m_n_yVertex / 20;	//it gives -1 y block from uper side
 	//int currentXVertex = (tempX ) * 20 + 10;
@@ -108,9 +113,15 @@ void creaturePacman::nextMove(const bool & aliveOfPinky)
 
 	//score Feature
 	if (Board::getBoardPart(tempX, 35 - tempY) == 16)
+	{
 		score += 10;
+		++numberOfFood;
+	}
 	else if (Board::getBoardPart(tempX, 35 - tempY) == 18)
+	{
 		score += 100;
+		++numberOfFood;
+	}
 	Board::setBoardPart(tempX, 35 - tempY, 17);
 	//cout << "\n........\n";
 }

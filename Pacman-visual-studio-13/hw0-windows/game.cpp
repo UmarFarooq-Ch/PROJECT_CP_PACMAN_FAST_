@@ -93,6 +93,7 @@ void DrawPacMan(float sx/*center x*/, float sy/*center y*/,
 	for (int i = 0; i < npmvertices; ++i)
 		glVertex4f(sx + pmvertices[i][0], sy + pmvertices[i][1], 0, 1);
 	glEnd();
+
 	//Dandi of Pacman
 	int local_variable = b[1]->getDandi();
 	if (local_variable % 2 == 0)
@@ -135,29 +136,113 @@ void Display()/**/ {
 	//for (int x = 0; x < 660;x += 20)
 	//	DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
+	
+
+	switch (b[1]->getPacmanLifes())
+	{
+	case 3:
+		DrawCircle(100, 30, 18, colors[YELLOW]);
+	case 2:
+		DrawCircle(60, 30, 18, colors[YELLOW]);
+	case 1:
+		DrawCircle(20, 30, 18, colors[YELLOW]);
+		break;
+	default:
+		DrawCircle(280, 360, 400, colors[GREEN]);
+		DrawCircle(280, 360, 300, colors[RED]);
+		DrawCircle(280, 360, 260, colors[LIGHT_GRAY]);
+		DrawCircle(280, 360, 240, colors[RED]);
+		DrawCircle(280, 360, 200, colors[BLUE]);
+		DrawCircle(280, 360, 100, colors[WHITE]);
+		DrawString(205, 350, "GAME OVER", colors[BLACK]);
+	}	
+	
 	int x, y;
 	//(*b)->GetInitPinkyPosition(x, y);
 	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 	b[1]->getPosition(x, y);
 	DrawPacMan(x, y, (*b)->GetCellSize() - 2, YELLOW);
+	
+	
 	b[2]->increaseTime();
 
-	if (b[2]->getTime() < 400)
+	if (b[2]->getTime() < 300)
 	{
 		//b[1]->getPosition(x, y);
-		b[2]->setGhostMode(2);
-	}
-	else if (b[2]->getTime() >= 400)
-	{
 		b[2]->setGhostMode(1);
+	}
+	else if (b[2]->getTime() >= 300)
+	{
+		b[2]->setGhostMode(2);
 		/////x = 30, y = 70;
-		if (b[2]->getTime() > 600)
+		if (b[2]->getTime() > 450)
 			b[2]->setTimeZero();
 	}
 	b[2]->nextMoveGhost();
 	b[2]->getPosition(x, y);
 	DrawGhost(x, y, b[2]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 
+	//for inky
+	b[3]->increaseTime();
+
+
+
+	if (b[3]->getTime() < 400)
+	{
+		//b[1]->getPosition(x, y);
+		b[3]->setGhostMode(2);
+	}
+	else if (b[3]->getTime() >= 400)
+	{
+		b[3]->setGhostMode(1);
+		/////x = 30, y = 70;
+		if (b[3]->getTime() > 600)
+			b[3]->setTimeZero();
+	}
+	b[3]->nextMoveGhost();
+	b[3]->getPosition(x, y);
+	DrawGhost(x, y, b[3]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+
+
+	//for Pinky
+	b[4]->increaseTime();
+
+	if (b[4]->getTime() < 400)
+	{
+		//b[1]->getPosition(x, y);
+		b[4]->setGhostMode(2);
+	}
+	else if (b[4]->getTime() >= 400)
+	{
+		b[3]->setGhostMode(1);
+		/////x = 30, y = 70;
+		if (b[4]->getTime() > 600)
+			b[4]->setTimeZero();
+	}
+	b[4]->nextMoveGhost();
+	b[4]->getPosition(x, y);
+	DrawGhost(x, y, b[4]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
+
+
+
+	//for cylide
+	b[5]->increaseTime();
+
+	if (b[5]->getTime() < 200)
+	{
+		//b[1]->getPosition(x, y);
+		b[5]->setGhostMode(1);
+	}
+	else if (b[5]->getTime() >= 200)
+	{
+		b[5]->setGhostMode(2);
+		/////x = 30, y = 70;
+		if (b[5]->getTime() > 500)
+			b[5]->setTimeZero();
+	}
+	b[5]->nextMoveGhost();
+	b[5]->getPosition(x, y);
+	DrawGhost(x, y, b[5]->getColor(), 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
 
 
 	x = (*b)->GetMidX();
@@ -171,7 +256,7 @@ void Display()/**/ {
 	b[2]->setPacmanPosition(x, y);
 */
 
-	if (b[2]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
+	if (b[2]->getAlive() && b[3]->getAlive() && b[4]->getAlive() && b[5]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
 		b[1]->increaseDandi();
 	if (b[1]->getMove())
 	{
@@ -181,6 +266,26 @@ void Display()/**/ {
 		b[1]->nextMove(b[2]->getAlive());
 		//glutPostRedisplay();
 	}
+	//Conditions to start game of 2 other pacman
+	if (b[1]->getNumberOfFood() >= 82)
+		b[4]->setCanMove(true);
+	if (b[1]->getNumberOfFood() >= 163)
+		b[5]->setCanMove(true);
+	if (b[1]->getPacmanLifes() <= 0)
+	{
+		b[1]->setAlive(false);
+		b[2]->setAlive(false);
+		b[3]->setAlive(false);
+		b[4]->setAlive(false);
+		b[5]->setAlive(false);
+	}
+	for (int i = 2; i <6 ;++i)
+		if (b[i]->getReset())
+		{
+			b[1]->resetPacman();
+			for (int x = 0; x < 6;++x)
+				b[x]->resetGhost();
+		}
 	glutPostRedisplay();
 }
 
@@ -266,13 +371,16 @@ int main(int argc, char*argv[]) {
 			blocks[i][j].initializeNeighbours(*temp, *temp, *temp, *temp);
 			blocks[i][j].setPredecesorToNull();
 		}
-	b = new Board *[3]; // create a new board object to use in the Display Function ...
+	b = new Board *[6]; // create a new board object to use in the Display Function ...
 	b[0] = new Board;
 	creaturePacman PaCman;
 	b[1] = &PaCman;
 
-	b[2] = new CGhost(260, 410, "Pinky", RED, true, 0, 2, blocks, &PaCman);
-	
+
+	b[2] = new CGhost(260, 410, "BLINKY", RED, true, 0, 2, blocks, &PaCman, true);
+	b[3] = new CGhost(260, 410, "INKY",LIGHT_SKY_BLUE, true, 0, 2, blocks, &PaCman, true);
+	b[4] = new CGhost(260, 410, "PINKY", PINK, true, 0, 2, blocks, &PaCman);
+	b[5] = new CGhost(260, 410, "CYLIDE", LIGHT_GOLDEN_ROD_YELLOW, true, 0, 2, blocks, &PaCman);
 	for (int i = 3; i <= 31; ++i)
 		for (int j = 1; j <= 26; ++j)
 		{
@@ -312,7 +420,10 @@ int main(int argc, char*argv[]) {
 				blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
 			}
 		}
-	b[2]->setTargetBoxes(1, 3, 12, 3, 9, 8, 9, 18);
+	b[2]->setTargetBoxes(1, 4, 12, 3, 9, 8, 9, 18);
+	b[3]->setTargetBoxes(12, 30, 1, 30, 3, 24, 12, 21);
+	b[4]->setTargetBoxes(15, 30, 21, 24, 19, 18, 26, 24);
+	b[5]->setTargetBoxes(26, 11, 26, 3, 15, 5, 15, 12);
 	int width = 560, height = 720; // i have set my window size to be 800 x 600
 	InitRandomizer(); // seed the random number generator...
 	glutInit(&argc, argv); // initialize the graphics library...

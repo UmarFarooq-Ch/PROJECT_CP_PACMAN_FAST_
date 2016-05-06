@@ -10,6 +10,8 @@ private:
 	int Lifes;
 	bool  m_n_move;	//member_numeric
 	int score;
+	int m_n_pacmanDandi;
+	int numberOfFood;
 	float m_n_radians;	//member_numeric
 	short check;	//this data member is used to stop thokaren of Pacman with walls
 public:
@@ -35,7 +37,11 @@ public:
 		check = 0;
 		m_n_xVertex = 270;
 		m_n_yVertex = 190;
+		m_b_reset = true;
 		//glutPostRedisplay();
 	}
+	inline int getNumberOfFood(void)const { return this->numberOfFood; }
+	inline int getDandi(void) const { return this->m_n_pacmanDandi; }
+	inline void increaseDandi(void) { if (m_b_alive)++this->m_n_pacmanDandi; }
 };
 

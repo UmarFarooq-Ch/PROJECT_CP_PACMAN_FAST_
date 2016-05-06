@@ -2,7 +2,7 @@
 
 
 
-CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28], creaturePacman * ptrPACMAN) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode), fixXVertex(pX), fixYVertex(pY)
+CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28], creaturePacman * ptrPACMAN, const bool & pCanMove) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode), fixXVertex(pX), fixYVertex(pY), canMove(pCanMove)
 {
 	for (int i =0; i < 36;++i)
 		for (int j = 0;j < 28;++j)
@@ -135,8 +135,11 @@ void CGhost::nextMoveGhost()
 	if (m_b_alive == false)
 	{
 		return;
-
 	}
+
+	if (!canMove)
+		return;
+
 	if (m_n_ghostMode == CHASE)
 	{
 		currentTargentxVertex = PACMAN->getX();
@@ -170,17 +173,15 @@ void CGhost::nextMoveGhost()
 	{
 		m_n_yVertex += 5;
 	}
-	if (abs(m_n_xVertex - PACMAN->getX()) <= 20 && abs(m_n_yVertex - PACMAN->getY()) <= 20)
+	if (abs(m_n_xVertex + 20  - PACMAN->getX()) <= 20 && abs(m_n_yVertex + 20 - PACMAN->getY()) <= 20)
 	{
 		PACMAN->decreasePacmanLifes();
 		if (PACMAN->getPacmanLifes() > 0)
 		{
-			PACMAN->resetPacman();
-			this->resetGhost();
+			m_b_reset = true;
 			for (int i = 0; i < 36;++i)
 				for (int j = 0;j < 28;++j)
 					(*blocks_array[i][j]).reset();
-
 		}
 		else
 			m_b_alive = false;

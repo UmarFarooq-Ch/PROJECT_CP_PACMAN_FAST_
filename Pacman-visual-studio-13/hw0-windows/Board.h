@@ -18,7 +18,6 @@ private:
 	int xcellsize, ycellsize;
 	int lwidth;
 	float cwidth;
-	int m_n_pacmanDandi;
 	//array for eating
 	int tp_array[31][28];
 	ColorNames pcolor, bcolor, gcolor;
@@ -60,9 +59,11 @@ public:
 		x = 13 * xcellsize;
 		y = 14 * ycellsize;
 	}
+	virtual inline bool getReset() { return false; }
+	virtual inline void setReset(const bool & pB) { return; }
 	virtual inline ColorNames getColor(void) const { return RED; }
-	inline int getDandi(void) const { return this->m_n_pacmanDandi; }
-	inline void increaseDandi(void) { ++this->m_n_pacmanDandi; }
+	virtual inline int getDandi(void) const { return 0; }
+	virtual inline void increaseDandi(void) { }
 	int getBoardPart(const int & pXVertex, const int & pYVertex) const; // return the value at location pXVertex, pYVertex in Board_array
 	void setBoardPart(const int & pXVertex, const int & pYVertex, const int & obj);
 	virtual void nextMove(const bool & aliveOfPinky);
@@ -78,10 +79,12 @@ public:
 	virtual inline void setRadian(const float & pValueRadian) {}
 	virtual inline int getPendingDirection(void) const { return 0; }
 	virtual inline bool getAlive() const { return false; }
+	virtual inline void setAlive(const bool & pB) {}
 	virtual inline string getScore(void) const { return ""; }
 	virtual inline int getPacmanLifes(void)const { return 0; }
 	virtual inline void decreasePacmanLifes(void) { }
 	virtual inline void resetPacman(void) {}
+	virtual inline int getNumberOfFood(void)const { return 0; }
 	//GhostFunctions
 	virtual void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
 	virtual bool BFS(void);
@@ -93,6 +96,8 @@ public:
 	virtual inline int getGhostMode(void) const { return 0; }
 	virtual inline void setGhostMode(const int & pMode) { return; }
 	virtual inline void getCurrentTarget(int & pX, int & pY) const {}
+	virtual inline void setCanMove(const bool & pM) {}
+	virtual inline void resetGhost(void) {}
 	//virtual inline void setPacmanPosition(const int & pX, const int & pY) {}
 }
 ;

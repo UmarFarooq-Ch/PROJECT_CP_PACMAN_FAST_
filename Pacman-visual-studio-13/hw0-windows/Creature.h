@@ -11,6 +11,7 @@ protected:
 	ColorNames m_e_c_color;	//member_enum_composition
 	bool m_b_alive;	//member_bool
 	int m_n_directionPending;	//member_numeric
+	bool m_b_reset;	//this bool is used to reset all creatures
 	enum eyesDirection
 	{
 		NILL_,	//Creature is looking to user
@@ -24,6 +25,8 @@ public:
 	Creature();
 	Creature(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus = true, const int & pEyesDirection = NILL_);
 	virtual ~Creature();
+	inline bool getReset() { return m_b_reset; }
+	inline void setReset(const bool & pB) { this->m_b_reset = pB; }
 	inline void getPosition(int & pX, int & pY) const { pX = this->m_n_xVertex;pY = this->m_n_yVertex;return; }
 	inline void setPosition(const int & pX, const int & pY) { this->m_n_xVertex = pX;this->m_n_yVertex = pY;return; }
 	inline int getX(void) const { return this->m_n_xVertex; }
@@ -35,5 +38,6 @@ public:
 	inline int getPendingDirection(void) const { return this->m_n_directionPending; }
 	inline ColorNames getColor(void) const { return this->m_e_c_color; }
 	inline bool getAlive(void) const { return m_b_alive; }
+	inline void setAlive(const bool & pB) { this->m_b_alive = pB; }
 };
 
