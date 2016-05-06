@@ -140,10 +140,51 @@ void CGhost::nextMoveGhost()
 	if (!canMove)
 		return;
 
+	int ____tempx;
+	int ____tempy;
+	int ____check = 0;
 	if (m_n_ghostMode == CHASE)
 	{
-		currentTargentxVertex = PACMAN->getX();
-		currentTargetyVertex = PACMAN->getY();
+		if (m_s_nameofCreature == "INKY" || m_s_nameofCreature == "BLINKY")
+		{
+			PACMAN->getPosition(____tempx, ____tempy);
+			____check = Board::getBoardPart((____tempx + 40) / 20,35 - (____tempy) / 20);
+			if (____check == 16 || ____check == 17 || ____check == 18)
+				currentTargentxVertex = PACMAN->getX() + 40;
+			else
+				currentTargentxVertex = PACMAN->getX();
+			currentTargetyVertex = PACMAN->getY();
+		}
+		else if (m_s_nameofCreature == "BLINKY")
+		{
+			currentTargentxVertex = PACMAN->getX();
+			currentTargetyVertex = PACMAN->getY();
+		}
+		else if (m_s_nameofCreature == "PINKY")
+		{
+			PACMAN->getPosition(____tempx, ____tempy);
+			____check = Board::getBoardPart((____tempx) / 20, 35 - (____tempy + 80) / 20);
+			if (____check == 16 || ____check == 17 || ____check == 18)
+				currentTargetyVertex = ____tempy + 80;
+			else
+				currentTargetyVertex = ____tempy;
+			currentTargentxVertex = ____tempx;
+		}
+		else if (m_s_nameofCreature == "CYLIDE")
+		{
+			PACMAN->getPosition(____tempx, ____tempy);
+			____check = Board::getBoardPart((____tempx - 60) / 20, 35 - (____tempy - 20) / 20);
+			if (____check == 16 || ____check == 17 || ____check == 18)
+			{
+				currentTargetyVertex = ____tempy - 20;
+				currentTargentxVertex = ____tempx - 60;
+			}
+			else
+			{
+				currentTargetyVertex = ____tempy;
+				currentTargentxVertex = ____tempx;
+			}
+		}
 	}
 	if (m_n_ghostMode == SCATTER)
 	{
@@ -162,9 +203,9 @@ void CGhost::nextMoveGhost()
 		if (m_n_xVertex == 520)
 			m_n_xVertex = 10;
 		m_n_xVertex += 5;
-		cout << "X: " << m_n_xVertex << endl;
 
 	}
+
 	else if (nextMove == DOWN_)
 	{
 		m_n_yVertex -= 5;
