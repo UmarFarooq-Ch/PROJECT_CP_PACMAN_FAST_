@@ -6,6 +6,8 @@ class CGhost : public Creature
 {
 protected:
 	const int fixXVertex, fixYVertex;
+	const string fixName;
+	const ColorNames fixColor;
 	enum Mode
 	{
 		NILL,
@@ -19,7 +21,7 @@ protected:
 	creaturePacman * PACMAN;
 	int nextMove;
 	bool temp;
-	int time;
+	//int time;
 	bool canMove;//this variable is true when noOfFood remains less then 30 according to different ghost
 	int index; // ye variable targetBox ke index ko change kerna ke liye he
 	CBlock  *blocks_array[36][28];
@@ -29,9 +31,9 @@ public:
 	bool BFS(void);
 	void nextMoveGhost();
 	virtual ~CGhost();
-	inline void increaseTime(void) { ++time; }
-	inline void setTimeZero(void) { time = 0; }
-	inline int getTime(void) { return time; }
+	//inline void increaseTime(void) { ++time; }
+	//inline void setTimeZero(void) { time = 0; }
+	//inline int getTime(void) { return time; }
 	inline int getGhostMode(void) const { return this->m_n_ghostMode; }
 	inline void setGhostMode(const int & pMode) { this->m_n_ghostMode = pMode; }
 	inline void getCurrentTarget(int & pX, int & pY) const { pX = currentTargentxVertex; pY = currentTargetyVertex; return; }
@@ -42,11 +44,25 @@ public:
 		m_n_yVertex = fixYVertex;
 		m_b_reset = false;
 		m_b_alive = true;
+		m_e_c_color = fixColor;
 		temp = false;
 		time = 0;
 		index = 0;
 		//nextMoveGhost(20, 60);
 	}
 	inline void setCanMove(const bool & pM) { canMove = pM; }
+	inline void frightenedMode(void)
+	{
+		currentTargentxVertex = m_n_targetBoxes[index] * 20;
+		currentTargetyVertex = m_n_targetBoxes[index + 1] * 20;
+		m_e_c_color = BLUE;
+		m_n_ghostMode = FRIGHTENED;
+	}
+	inline void stopFrightenedMode(void)
+	{
+
+		m_e_c_color = fixColor;
+		m_n_ghostMode = SCATTER;
+	}
 };
 

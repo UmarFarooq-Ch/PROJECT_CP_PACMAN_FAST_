@@ -2,14 +2,14 @@
 
 
 
-CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28], creaturePacman * ptrPACMAN, const bool & pCanMove) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode), fixXVertex(pX), fixYVertex(pY), canMove(pCanMove)
+CGhost::CGhost(const int & pX, const int & pY, const string & pNameOfCreature, const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection, const int & pGhostMode, CBlock array[][28], creaturePacman * ptrPACMAN, const bool & pCanMove) :Creature(pX, pY, pNameOfCreature, pValue, pAliveStatus, pEyesDirection), m_n_ghostMode(pGhostMode), fixXVertex(pX), fixYVertex(pY), canMove(pCanMove), fixName(pNameOfCreature), fixColor(pValue)
 {
 	for (int i =0; i < 36;++i)
 		for (int j = 0;j < 28;++j)
 		{
 			blocks_array[i][j] = & array[i][j];
 		}
-	time = 0;
+	//time = 0;
 	temp = false;
 	m_b_alive = true;
 	index = 0;
@@ -118,7 +118,7 @@ bool CGhost::BFS(void)
 		}
 	}
 
-	if (endStop == 1 && m_n_ghostMode == SCATTER)
+	if (endStop == 1 && (m_n_ghostMode == SCATTER || m_n_ghostMode == FRIGHTENED))
 	{
 		endStop = 0;
 		currentTargentxVertex = m_n_targetBoxes[index] * 20;
@@ -159,7 +159,11 @@ void CGhost::nextMoveGhost()
 	}
 	if (nextMove == RIGHT_)
 	{
+		if (m_n_xVertex == 520)
+			m_n_xVertex = 10;
 		m_n_xVertex += 5;
+		cout << "X: " << m_n_xVertex << endl;
+
 	}
 	else if (nextMove == DOWN_)
 	{
@@ -167,24 +171,34 @@ void CGhost::nextMoveGhost()
 	}
 	else if (nextMove == LEFT_)
 	{
+		if (m_n_xVertex == 10)
+			m_n_xVertex = 550;
 		m_n_xVertex -= 5;
 	}
 	else if (nextMove == UP_)
 	{
 		m_n_yVertex += 5;
 	}
-	if (abs(m_n_xVertex + 20  - PACMAN->getX()) <= 20 && abs(m_n_yVertex + 20 - PACMAN->getY()) <= 20)
+	if (abs(m_n_xVertex + 20 - PACMAN->getX()) <= 20 && abs(m_n_yVertex + 20 - PACMAN->getY()) <= 20)
 	{
-		PACMAN->decreasePacmanLifes();
-		if (PACMAN->getPacmanLifes() > 0)
+		if ((m_n_ghostMode == 1 || m_n_ghostMode == 2))
 		{
-			m_b_reset = true;
-			for (int i = 0; i < 36;++i)
-				for (int j = 0;j < 28;++j)
-					(*blocks_array[i][j]).reset();
+			PACMAN->decreasePacmanLifes();
+			if (PACMAN->getPacmanLifes() > 0)
+			{
+				m_b_reset = true;
+				for (int i = 0; i < 36;++i)
+					for (int j = 0;j < 28;++j)
+						(*blocks_array[i][j]).reset();
+			}
+			else
+				m_b_alive = false;
 		}
 		else
-			m_b_alive = false;
+		{
+			resetGhost();
+			PACMAN->setIncreaseStoreByPassingValue(200);
+		}
 	}
 }
 

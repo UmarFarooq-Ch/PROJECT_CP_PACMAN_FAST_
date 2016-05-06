@@ -7,6 +7,8 @@ creaturePacman::creaturePacman(const int & pX, const int & pY, const string & pN
 	Lifes = 3;
 	numberOfFood = 0;
 	m_n_pacmanDandi = 0;
+	BonusFood = false;
+	lifesWhenEatedBonusFood = 3;
 }
 
 creaturePacman::~creaturePacman()
@@ -49,6 +51,11 @@ void creaturePacman::nextMove(const bool & aliveOfPinky)
 			if (check < 1)
 				m_n_xVertex -= 5;
 			++check;
+
+			if (m_n_xVertex == 10 && tempY == 18)
+			{
+				m_n_xVertex = 550;
+			}
 		}
 		//Board::setBoardPart(tempX,35- tempY, 17); //set eatable to moveable empty space
 	}
@@ -69,6 +76,10 @@ void creaturePacman::nextMove(const bool & aliveOfPinky)
 			if (check < 2)
 				m_n_xVertex += 5;
 			++check;
+			if (m_n_xVertex == 550 && tempY == 18)
+			{
+				m_n_xVertex = 10;
+			}
 		}
 		//Board::setBoardPart(tempX, 35 - tempY, 17); //set eatable to moveable empty space
 	}
@@ -119,6 +130,8 @@ void creaturePacman::nextMove(const bool & aliveOfPinky)
 	}
 	else if (Board::getBoardPart(tempX, 35 - tempY) == 18)
 	{
+		BonusFood = true;
+		lifesWhenEatedBonusFood = Lifes;
 		score += 100;
 		++numberOfFood;
 	}

@@ -85,6 +85,11 @@ public:
 	virtual inline void decreasePacmanLifes(void) { }
 	virtual inline void resetPacman(void) {}
 	virtual inline int getNumberOfFood(void)const { return 0; }
+	virtual inline bool getBonusFood(void) const { return false; }
+	virtual inline void setBonusFoood(const bool & pB) { }
+	virtual inline int getLifeWhenBonusEated(void) const { return 0; }
+	virtual inline void setLifeWhenBonusEated(const int & pValue) { }
+	virtual inline void setIncreaseStoreByPassingValue(const int & pV) {}
 	//GhostFunctions
 	virtual void setTargetBoxes(const int & x0, const int & y0, const int & x1, const int & y1, const int & x2, const int & y2, const int & x3, const int & y3);
 	virtual bool BFS(void);
@@ -98,6 +103,8 @@ public:
 	virtual inline void getCurrentTarget(int & pX, int & pY) const {}
 	virtual inline void setCanMove(const bool & pM) {}
 	virtual inline void resetGhost(void) {}
+	virtual inline void frightenedMode(void) {}
+	virtual inline void stopFrightenedMode(void) {}
 	//virtual inline void setPacmanPosition(const int & pX, const int & pY) {}
 }
 ;

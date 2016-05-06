@@ -6,6 +6,7 @@ Creature::Creature()
 
 Creature::Creature(const int & pX, const int & pY, const string & pNameOfCreature,const ColorNames & pValue, const bool & pAliveStatus, const int & pEyesDirection)
 {
+	time = 0;
 	m_b_reset = false;
 	this->m_n_xVertex = pX;
 	this->m_n_yVertex = pY;

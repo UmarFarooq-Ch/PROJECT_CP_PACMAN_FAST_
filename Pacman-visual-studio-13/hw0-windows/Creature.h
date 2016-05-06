@@ -12,6 +12,7 @@ protected:
 	bool m_b_alive;	//member_bool
 	int m_n_directionPending;	//member_numeric
 	bool m_b_reset;	//this bool is used to reset all creatures
+	int time;
 	enum eyesDirection
 	{
 		NILL_,	//Creature is looking to user
@@ -39,5 +40,8 @@ public:
 	inline ColorNames getColor(void) const { return this->m_e_c_color; }
 	inline bool getAlive(void) const { return m_b_alive; }
 	inline void setAlive(const bool & pB) { this->m_b_alive = pB; }
+	inline void increaseTime(void) { ++time; }
+	inline void setTimeZero(void) { time = 0; }
+	inline int getTime(void) { return time; }
 };
 

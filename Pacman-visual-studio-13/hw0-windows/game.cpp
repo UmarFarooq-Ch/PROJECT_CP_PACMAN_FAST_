@@ -137,7 +137,15 @@ void Display()/**/ {
 	//	DrawLine(x, 0, x, 720, 1);
 	(*b)->Draw();
 	
-
+	if (b[1]->getNumberOfFood() >= 245)
+	{
+		for (int i = 1; i < 6; ++i)
+		{
+			b[i]->setAlive(false);
+		}
+			DrawCircle(280, 360, 250, colors[WHITE]);
+			DrawString(215, 350, "YOU WON", colors[BLACK]);
+	}
 	switch (b[1]->getPacmanLifes())
 	{
 	case 3:
@@ -156,7 +164,40 @@ void Display()/**/ {
 		DrawCircle(280, 360, 100, colors[WHITE]);
 		DrawString(205, 350, "GAME OVER", colors[BLACK]);
 	}	
-	
+	if (b[1])
+	//Conditions for BonusFood
+	if (b[1]->getBonusFood())
+	{
+		for (int i = 2;i < 6;++i)
+		{
+			b[i]->setGhostMode(3);
+			b[i]->frightenedMode();
+		}
+		b[1]->setBonusFoood(false);
+		b[1]->setTimeZero();
+	}
+	b[1]->increaseTime();
+	//When Pacman eates bonus food then the timer of pacman set to zero
+	//and pacman remaining lifes will be noted to variable 'lifesWhenEatedBonusFood'
+	//if this lifesWhenEatedBonusFood and actual pacman life remain same then we will
+	//limit this ability of pacman by value of 150
+	//if time increased by 150 then stopFreightendMode of ghost(who are in frientened mode) will be called
+	if (b[1]->getLifeWhenBonusEated() == b[1]->getPacmanLifes())
+	{
+		if (b[1]->getTime() > 150)
+		{
+			for (int i = 2; i < 6;++i)
+			{
+				if (b[i]->getGhostMode() == 3)
+					b[i]->stopFrightenedMode();
+			}
+			b[1]->setLifeWhenBonusEated(0);
+		}
+	}
+	if (b[1]->getLifeWhenBonusEated() > b[1]->getPacmanLifes())
+	{
+		b[2]->setReset(true);
+	}
 	int x, y;
 	//(*b)->GetInitPinkyPosition(x, y);
 	//DrawGhost(x, y, PINK, 2 * (*b)->GetCellSize(), 2 * (*b)->GetCellSize());
@@ -166,12 +207,12 @@ void Display()/**/ {
 	
 	b[2]->increaseTime();
 
-	if (b[2]->getTime() < 300)
+	if (b[2]->getTime() < 300 && b[2]->getGhostMode() != 3)
 	{
 		//b[1]->getPosition(x, y);
 		b[2]->setGhostMode(1);
 	}
-	else if (b[2]->getTime() >= 300)
+	else if (b[2]->getTime() >= 300 && b[2]->getGhostMode() != 3)
 	{
 		b[2]->setGhostMode(2);
 		/////x = 30, y = 70;
@@ -187,12 +228,12 @@ void Display()/**/ {
 
 
 
-	if (b[3]->getTime() < 400)
+	if (b[3]->getTime() < 400 && b[3]->getGhostMode() != 3)
 	{
 		//b[1]->getPosition(x, y);
 		b[3]->setGhostMode(2);
 	}
-	else if (b[3]->getTime() >= 400)
+	else if (b[3]->getTime() >= 400 && b[3]->getGhostMode() != 3)
 	{
 		b[3]->setGhostMode(1);
 		/////x = 30, y = 70;
@@ -207,12 +248,12 @@ void Display()/**/ {
 	//for Pinky
 	b[4]->increaseTime();
 
-	if (b[4]->getTime() < 400)
+	if (b[4]->getTime() < 400 && b[4]->getGhostMode() != 3)
 	{
 		//b[1]->getPosition(x, y);
 		b[4]->setGhostMode(2);
 	}
-	else if (b[4]->getTime() >= 400)
+	else if (b[4]->getTime() >= 400 && b[4]->getGhostMode() != 3)
 	{
 		b[3]->setGhostMode(1);
 		/////x = 30, y = 70;
@@ -228,12 +269,12 @@ void Display()/**/ {
 	//for cylide
 	b[5]->increaseTime();
 
-	if (b[5]->getTime() < 200)
+	if (b[5]->getTime() < 200 && b[5]->getGhostMode() != 3)
 	{
 		//b[1]->getPosition(x, y);
 		b[5]->setGhostMode(1);
 	}
-	else if (b[5]->getTime() >= 200)
+	else if (b[5]->getTime() >= 200 && b[5]->getGhostMode() != 3)
 	{
 		b[5]->setGhostMode(2);
 		/////x = 30, y = 70;
@@ -256,8 +297,8 @@ void Display()/**/ {
 	b[2]->setPacmanPosition(x, y);
 */
 
-	if (b[2]->getAlive() && b[3]->getAlive() && b[4]->getAlive() && b[5]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
-		b[1]->increaseDandi();
+	//if (b[2]->getAlive() && b[3]->getAlive() && b[4]->getAlive() && b[5]->getAlive())	//Game ko stop krne ke liye ye conditions lagai haen
+	b[1]->increaseDandi();
 	if (b[1]->getMove())
 	{
 		int local_variable = b[1]->getPendingDirection();
@@ -266,18 +307,21 @@ void Display()/**/ {
 		b[1]->nextMove(b[2]->getAlive());
 		//glutPostRedisplay();
 	}
+
+
 	//Conditions to start game of 2 other pacman
 	if (b[1]->getNumberOfFood() >= 82)
 		b[4]->setCanMove(true);
 	if (b[1]->getNumberOfFood() >= 163)
 		b[5]->setCanMove(true);
+
+
+	//conditions for GameOver
+
 	if (b[1]->getPacmanLifes() <= 0)
 	{
-		b[1]->setAlive(false);
-		b[2]->setAlive(false);
-		b[3]->setAlive(false);
-		b[4]->setAlive(false);
-		b[5]->setAlive(false);
+		for (int i = 1;i < 6;++i)
+			b[i]->setAlive(false);
 	}
 	for (int i = 2; i <6 ;++i)
 		if (b[i]->getReset())
@@ -336,6 +380,12 @@ void PrintableKeys(unsigned char key, int x, int y) {
 	if (key == KEY_ESC/* Escape key ASCII*/) {
 		exit(1); // exit the program when escape key is pressed.
 	}
+
+	if  (key == 112 || key == 80)
+		system("pause");
+
+	if (key == 82 || key == 114)
+		b[2]->setReset(true);
 }
 
 /*
@@ -378,9 +428,9 @@ int main(int argc, char*argv[]) {
 
 
 	b[2] = new CGhost(260, 410, "BLINKY", RED, true, 0, 2, blocks, &PaCman, true);
-	b[3] = new CGhost(260, 410, "INKY",LIGHT_SKY_BLUE, true, 0, 2, blocks, &PaCman, true);
-	b[4] = new CGhost(260, 410, "PINKY", PINK, true, 0, 2, blocks, &PaCman);
-	b[5] = new CGhost(260, 410, "CYLIDE", LIGHT_GOLDEN_ROD_YELLOW, true, 0, 2, blocks, &PaCman);
+	b[3] = new CGhost(260, 350, "INKY",LIGHT_SKY_BLUE, true, 0, 2, blocks, &PaCman, true);
+	b[4] = new CGhost(220, 350, "PINKY", LIGHT_PINK, true, 0, 2, blocks, &PaCman);
+	b[5] = new CGhost(300, 350, "CYLIDE", SANDY_BROWN, true, 0, 2, blocks, &PaCman);
 	for (int i = 3; i <= 31; ++i)
 		for (int j = 1; j <= 26; ++j)
 		{
@@ -420,6 +470,20 @@ int main(int argc, char*argv[]) {
 				blocks[i][j].initializeNeighbours(*array[0], *array[1], *array[2], *array[3]);
 			}
 		}
+	//Manually Initializing some blocks
+	CBlock *tempEmptyBlock = NULL;
+	blocks[18][1].initializeNeighbours(blocks[18][2], *tempEmptyBlock, blocks[18][0], *tempEmptyBlock);
+	blocks[18][0].initializeNeighbours(blocks[18][1], *tempEmptyBlock, blocks[18][27], *tempEmptyBlock);
+	blocks[18][27].initializeNeighbours(blocks[18][0], *tempEmptyBlock, blocks[18][26], *tempEmptyBlock);
+	blocks[18][26].initializeNeighbours(blocks[18][27], *tempEmptyBlock, blocks[18][25], *tempEmptyBlock);
+	blocks[18][11].initializeNeighbours(blocks[18][12], *tempEmptyBlock, *tempEmptyBlock, *tempEmptyBlock);
+	blocks[18][12].initializeNeighbours(blocks[18][13], *tempEmptyBlock, blocks[18][11], *tempEmptyBlock);
+	blocks[18][13].initializeNeighbours(blocks[18][14], *tempEmptyBlock, blocks[18][12], blocks[19][13]);
+	blocks[18][14].initializeNeighbours(blocks[18][15], *tempEmptyBlock, blocks[18][13], *tempEmptyBlock);
+	blocks[18][15].initializeNeighbours(blocks[18][16], *tempEmptyBlock, blocks[18][14], *tempEmptyBlock);
+	blocks[18][16].initializeNeighbours(*tempEmptyBlock, *tempEmptyBlock, blocks[18][15], *tempEmptyBlock);
+	blocks[19][13].initializeNeighbours(*tempEmptyBlock, blocks[18][13], *tempEmptyBlock, blocks[20][13]);
+	blocks[20][13].initializeNeighbours(*tempEmptyBlock, blocks[19][13], *tempEmptyBlock, blocks[21][13]);
 	b[2]->setTargetBoxes(1, 4, 12, 3, 9, 8, 9, 18);
 	b[3]->setTargetBoxes(12, 30, 1, 30, 3, 24, 12, 21);
 	b[4]->setTargetBoxes(15, 30, 21, 24, 19, 18, 26, 24);
